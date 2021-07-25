@@ -4,9 +4,15 @@
   #   The weight parameter defines the order that the links will appear in.
 
 main:
-  - name: Home
+  - name: 主页
     url: /
     weight: 10
-  - name: About
-    url: about/
+  - name: 标签
+    url: tags/
     weight: 20
+  - name: 分类
+    url: categories/
+    weight: 30
+  - name: 关于
+    url: about/
+    weight: 40

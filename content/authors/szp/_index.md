@@ -1,16 +1,16 @@
 ---
 # Display name
-title: Nelson Bighetti
+title: 孙子平
 
 # Is this the primary user of the site?
 superuser: true
 
 # Role/position
-role: Professor of Artificial Intelligence
+role: 静态分析方向研究生
 
 # Organizations/Affiliations
 organizations:
-- name: Stanford University
+- name: 清华大学软件学院
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
@@ -57,6 +57,12 @@ social:
 #email: ""
 ---
 
-Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+TODO: 死链
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+这是我的个人博客。我叫孙子平，清华大学软件工程系在读。这是我的[简历](https://file.szp.io/f/5e8db6d2be5641a2abda/)。
+
+这个博客目前由这个[仓库](https://github.com/sunziping2016/oak-tree-house)维护。
+
+这已经是我的博客不知第几次大更改了。我现在的兴趣主要有编程和玩Minecraft。
+
+希望能和大家共同进步。
