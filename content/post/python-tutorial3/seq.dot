@@ -1,0 +1,17 @@
+digraph {
+  graph [rankdir=BT]
+  subgraph abstract {
+    MutableSequence -> Sequence -> Iterable
+  }
+  subgraph concret {
+    node [shape=box]
+    tuple, str, bytes, range, list, bytearray, memoryview
+  }
+  tuple -> Sequence
+  str -> Sequence
+  bytes -> Sequence
+  range -> Sequence
+  memoryview -> Sequence
+  list -> MutableSequence
+  bytearray -> MutableSequence
+}

@@ -1,0 +1,24 @@
+digraph {
+  graph [rankdir=BT]
+  subgraph abstract {
+    MutableMapping -> Mapping -> Collection -> Iterable
+    Set -> Collection
+    ItemsView -> MappingView
+    ItemsView -> Set
+    KeysView -> MappingView
+    KeysView -> Set
+    ValuesView -> MappingView
+    ValuesView -> Collection
+  }
+  subgraph concret {
+    node [shape=box]
+    dict
+    "dict.items()"
+    "dict.keys()"
+    "dict.values()"
+  }
+  dict -> MutableMapping
+  "dict.items()" -> ItemsView
+  "dict.keys()" -> KeysView
+  "dict.values()" -> ValuesView
+}

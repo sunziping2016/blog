@@ -1,0 +1,85 @@
+digraph abc {
+  graph [rankdir=RL]
+  subgraph abstract {
+    Container
+    Hashable
+    Iterable
+    Iterator -> Iterable
+    Reversible -> Iterable
+    Generator -> Iterator
+    Sized
+    Callable
+    Collection -> Sized
+    Collection -> Iterable
+    Collection -> Container
+    Sequence -> Reversible
+    Sequence -> Collection
+    MutableSequnece -> Sequence
+    ByteString -> Sequence
+    Set -> Collection
+    MutableSet -> Set
+    Mapping -> Collection
+    MutableMapping -> Mapping
+    MappingView -> Sized
+    ItemsView -> MappingView
+    ItemsView -> Set
+    KeysView -> MappingView
+    KeysView -> Set
+    ValuesView -> MappingView
+    ValuesView -> Collection
+    Awaitable
+    Coroutine -> Awaitable
+    AsyncIterable
+    AsyncIterator -> AsyncIterable
+    AsyncGenerator -> AsyncIterator
+    Number
+    Complex -> Number
+    Real -> Complex
+    Rational -> Real
+    Integral -> Rational
+  }
+  subgraph concret {
+    node [shape=box]
+    rank=same
+    int
+    float
+    bool
+    bool
+    complex
+    list
+    tuple
+    range
+    str
+    bytes
+    bytearray
+    memoryview
+    set
+    fronzenset
+    dict
+  }
+  int -> Hashable
+  int -> Integral
+  float -> Hashable
+  float -> Real
+  bool -> Hashable
+  bool -> Integral
+  complex -> Hashable
+  complex -> Complex
+  list -> MutableSequnece
+  tuple -> Sequence
+  tuple -> Hashable
+  range -> Sequence
+  range -> Hashable
+  str -> Sequence
+  str -> Hashable
+  bytes -> ByteString
+  bytes -> Hashable
+  bytearray -> ByteString
+  bytearray -> MutableSequnece
+  memoryview -> Sequence
+  memoryview -> Hashable
+  set -> MutableSet
+  fronzenset -> Set
+  fronzenset -> Hashable
+  dict -> MutableMapping
+}

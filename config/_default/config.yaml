@@ -5,7 +5,7 @@
 
 title: 山楂片的博客 # Website name
 baseurl: 'https://szp15.com' # Website URL
-copyright: '<i class="far fa-copyright"></i> 2016-{year} Ziping Sun <a href="https://beian.miit.gov.cn">京ICP备 17062397号-2' # Footer text, e.g. '© {year} Me'
+copyright: '<i class="far fa-copyright"></i> 2016-{year} 孙子平 [京ICP备 17062397号-2](https://beian.miit.gov.cn)' # Footer text, e.g. '© {year} Me'
 
 ############################
 ## LANGUAGE
@@ -34,7 +34,7 @@ paginate: 10
 enableEmoji: true
 enableRobotsTXT: true
 footnotereturnlinkcontents: <sup>^</sup>
-ignoreFiles: [\.ipynb$, .ipynb_checkpoints$, \.Rmd$, \.Rmarkdown$, _cache$]
+ignoreFiles: []
 disableAliases: true
 permalinks:
   authors: '/author/:slug/'

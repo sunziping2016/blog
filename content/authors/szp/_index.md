@@ -1,68 +1,30 @@
 ---
-# Display name
 title: 孙子平
-
-# Is this the primary user of the site?
 superuser: true
-
-# Role/position
 role: 静态分析方向研究生
-
-# Organizations/Affiliations
 organizations:
 - name: 清华大学软件学院
-  url: ""
+  url: "https://www.thss.tsinghua.edu.cn/"
 
-# Short bio (displayed in user profile at end of posts)
-bio: My research interests include distributed robotics, mobile computing and programmable matter.
-
-#interests:
-#- Artificial Intelligence
-#- Computational Linguistics
-#- Information Retrieval
-
-#education:
-#  courses:
-#  - course: PhD in Artificial Intelligence
-#    institution: Stanford University
-#    year: 2012
-#  - course: MEng in Artificial Intelligence
-#    institution: Massachusetts Institute of Technology
-#    year: 2009
-#  - course: BSc in Artificial Intelligence
-#    institution: Massachusetts Institute of Technology
-#    year: 2008
-
-# Social/Academic Networking
-# For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
-#   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
-#   form "mailto:your-email@example.com" or "#contact" for contact widget.
 social:
 - icon: envelope
   icon_pack: fas
-  link: 'about/#contact'  # For a direct email link, use "mailto:test@example.org".
+  link: 'mailto:me@szp.io'
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
+  link: https://twitter.com/sunziping2016
 - icon: github
   icon_pack: fab
-  link: https://github.com/gcushen
-# Link to a PDF of your resume/CV from the About widget.
-# To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
-# - icon: cv
-#   icon_pack: ai
-#   link: files/cv.pdf
-
-# Enter email to display Gravatar (if Gravatar enabled in Config)
-#email: ""
+  link: https://github.com/sunziping2016
+- icon: cv
+  icon_pack: ai
+  link: files/resume.zh.pdf
 ---
 
-TODO: 死链
+## 个人简介
 
-这是我的个人博客。我叫孙子平，清华大学软件工程系在读。这是我的[简历](https://file.szp.io/f/5e8db6d2be5641a2abda/)。
+清华静态分析硕士在读。身形又矮又胖。数学一般，编程还行。没啥世俗的兴趣爱好，游戏也只是云玩家。性格测试是INTJ，确实是理想主义、完美主义。不过个人认为还是合群的，待人也不错。欢迎技术交流。
 
-这个博客目前由这个[仓库](https://github.com/sunziping2016/oak-tree-house)维护。
+患有双相情感障碍，休学一年。个人认为是童年不幸、情感受挫和压力过大造成的，现在病情稳定。
 
-这已经是我的博客不知第几次大更改了。我现在的兴趣主要有编程和玩Minecraft。
-
-希望能和大家共同进步。
+坚信世上唯有代码和女朋友不可辜负。点击头像下方的“CV”按钮可以查看我的简历，点击[这里]({{<ref "/post/projects/index.md">}})查看我参加的编程项目。

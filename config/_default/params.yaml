@@ -5,6 +5,7 @@
 
 # Appearance
 
+i_am_a_sponsor: true
 theme: starter-blog
 day_night: true
 font: ''
@@ -22,12 +23,12 @@ twitter: ''
 
 main_menu:
   enable: true
-  align: c
-  show_logo: false
+  align: r
+  show_logo: true
   show_language: false
   show_day_night: true
   show_search: true
-  highlight_active_link: false
+  highlight_active_link: true
 
 # Localization
 
@@ -39,8 +40,9 @@ time_format: '3:04 PM'
 highlight: true
 highlight_languages:
   - r
-math: false
-diagram: false
+  - haskell
+math: true
+diagram: true
 privacy_pack: false
 edit_page:
   repo_url: ''
@@ -94,4 +96,4 @@ cms:
   local_backend: false
 icon:
   pack:
-    ai: false
+    ai: true
