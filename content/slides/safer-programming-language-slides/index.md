@@ -13,7 +13,7 @@ slides:
 
 {{< slide background-image="./background.svg">}}
 
-# 更安全的程序设计语言
+## 更安全的程序设计语言
 
 <div style="text-align:right;">——从常见漏洞的角度浅谈编程语言设计</div>
 
@@ -155,7 +155,6 @@ if (p == NULL) {
 
 未初始化与空值类似，是一个正常类型不该有的状态，解决方案：
 
-
 1. **不允许未初始化数据**：使用**构造函数**，C++（甚至**初始化列表**）
 2. **使用控制流分析**：如Rust
 
@@ -184,7 +183,6 @@ printf("%d\n", counter)
 
 整数溢出很可能是程序异常的行为。为了避免这种情况：
 
-
 - 任意精度的整型：Python
 - 运行时检查：C++（`clang -fsanitize=undefined`），Rust debug模式
 
@@ -205,13 +203,11 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior test.c:1:54 in
 
 不再需要的资源（如堆内存、文件、锁）未释放，就会造成泄露。为了避免这种情况：
 
-
 - 自动调用析构函数：C++（RAII范式）
 - 垃圾回收：Java及绝大多数脚本语言（仅能可靠释放堆内存资源）
 - 所有权机制：Rust
 
 对于使用垃圾回收的语言，诸如文件之类的资源是需要手动释放的。于是就有了：
-
 
 - 可关闭对象：Java（`AutoClosable`）、Python（`__enter__`，`__exit__`），需要手动调用`close()`或使用try-with-resources语句
 
@@ -266,7 +262,6 @@ ricky->partner = lucy;
 
 异常安全，是指当异常发生时：
 
-
 1. 资源**无泄漏**
 2. 数据具有**一致性**
 
@@ -301,13 +296,11 @@ with open("lol") as f:
 
 数据竞争竞争是并发中很容易出现的问题，**加锁**可以解决这个问题，但谁能确保不忘呢。为了避免这种情况：
 
-
 - 纯函数&不可变数据：Haskell，消除了数据竞争的可能
 - 借用检查：Rust，同样消除了数据竞争的可能
 - 同步原语：锁（互斥锁、读写锁），channel（Go、Rust）
 
 数据竞争的条件：
-
 
 - 可能同时出现多次写（$\geq 2$）
 - 或，可能同时出现一次写和多次读（$\geq 1$）
@@ -319,7 +312,6 @@ with open("lol") as f:
 ### 7.1 Rust的借用检查
 
 Rust只允许一个时刻持有：
-
 
 - 要么，一个可写引用
 - 要么，多个可读引用
@@ -335,7 +327,6 @@ Rust只允许一个时刻持有：
 <div style="display:flex; justify-content:space-between;"><div>
 
 编程语言有如下的分类：
-
 
 - 强类型：不容忍隐式类型转换
 - 弱类型：容忍隐式类型转换
@@ -435,7 +426,6 @@ C++在20版本中也引入了Concept，但历史包袱很重。现代语言大�
 ---
 
 {{< slide background-image="./background.svg">}}
-
 
 <h1 style="text-align:center">谢谢大家!<h1>
 

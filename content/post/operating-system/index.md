@@ -14,7 +14,7 @@ draft: false
 
 ## 操作系统复习进度表
 
-### 操作系统
+### 进度表：操作系统
 
 - [x] 1. 第1章 概述
 - [x] 2. 第2章 进程管理
@@ -24,7 +24,7 @@ draft: false
 - [x] 6. 第5章 文件系统
 - [x] 7. 第6章 操作系统与安全
 
-### Petri网
+### 进度表：Petri网
 
 - [x] 1. 第2章 Petri网
 - [ ] <del>2. 第2章 着色Petri</del>
@@ -32,7 +32,7 @@ draft: false
 - [ ] <del>4. 第5章 清洗结构化事件日志</del>
 - [ ] <del>5. 第6章 过程模型相似性法</del>
 
-### 中间件
+### 进度表：中间件
 
 - [x] 1. 第01章 中间件概述
 - [ ] <del>2. 第02章 GlassFish简介</del>
@@ -462,7 +462,7 @@ $$\text{最大容量}=\text{FAT表项的最大个数}\times\text{块的大小}$$
 
 ### Petri网
 
-#### Petri网
+#### Petri网概述
 
 $N = (S,T,F)$，$F: S \times T \rightarrow T \times S$。S表示资源集合（含Token的状态）用圆表示，T表示任务集合用方块表示。Marking Vector存储资源状态。
 

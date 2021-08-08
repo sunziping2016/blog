@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "test": "markdownlint-cli2",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^7.0.1",
+    "markdownlint": "^0.23.1",
+    "markdownlint-cli2": "^0.2.0"
+  }
+}

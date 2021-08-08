@@ -1001,25 +1001,25 @@ yay -S texlive-most texlive-lang biber
 
 ### 安装常用的命令行软件
 
-#### 开发相关
+#### 开发相关的命令行软件
 
 ```bash
 yay -S cmake gdb git git-lfs tk clang llvm cppcheck valgrind coq coqide
 ```
 
-#### 压缩软件
+#### 压缩软件的命令行软件
 
 ```bash
 yay -S bzip2 zip p7zip unzip-iconv unrar
 ```
 
-#### 其他应用
+#### 其他应用的命令行软件
 
 ```bash
 yay -S htop wget tree w3m tmux ditaa graphviz dos2unix neofetch networkmanager-openconnect openconnect pwgen rsync you-get scrapy tensorboard cloc
 ```
 
-#### 游戏
+#### 游戏的命令行软件
 
 ```bash
 yay -S bsd-games curseofwar
@@ -1027,19 +1027,19 @@ yay -S bsd-games curseofwar
 
 ### 安装常用的图形界面软件
 
-#### 开发相关
+#### 开发相关的图形界面软件
 
 ```bash
 yay -S visual-studio-code-bin clion intellij-idea-ultimate-edition clion-jre intellij-idea-ultimate-edition-jre datagrip datagrip-jre
 ```
 
-#### 其他应用
+#### 其他应用的图形界面软件
 
 ```bash
 yay -S chromium pepper-flash birdtray thunderbird seafile-client telegram-desktop audacity celestia baidunetdisk-bin inkscape simplescreenrecorder netease-cloud-music openshot postman-bin qq-linux ttf-wps-fonts wps-office wxmaxima maxima wireshark-qt vlc xdot teamviewer syncplay freecad zoom2 scrcpy aegisub
 ```
 
-#### 游戏
+#### 游戏的图形界面软件
 
 ```bash
 yay -S minecraft-launcher mcedit

@@ -54,6 +54,10 @@
   max-height: 200px;
 }
 
+table {
+  overflow-x: auto;
+}
+
 pre, code {
   font-family: monospace;
 }
