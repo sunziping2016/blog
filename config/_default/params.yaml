@@ -41,6 +41,7 @@ highlight: true
 highlight_languages:
   - r
   - haskell
+  - coq
 math: true
 diagram: true
 privacy_pack: false
