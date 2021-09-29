@@ -141,6 +141,13 @@ Repo中为了算法更稳定，它会寻找多个极值点，在极值点是最�
 ### RCNN（Regions with CNN Features）[^girshick2014rich]
 
 1. 与类别无关的候选区域选取，方案为Selective Search[^uijlings2013selective]
+2. 从图像中裁剪出相同大小的候选区域用于CNN模型预训练
+3. 用SVM对CNN模型中提取的特征进行分类
+4. 用边框对各类别的特征进行回归
+
+#### SPPNet(Spatial Pyramid Pooling Net)
+
+#### Fast RCNN
 
 WIP
 
