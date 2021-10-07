@@ -1,6 +1,6 @@
 ---
 title: "语义分割论文概览（未完待续）"
-authors: [szp]
+authors: [szp, wt]
 tags: [机器学习]
 categories: [机器学习]
 date: 2021-09-26T02:01:01+08:00
@@ -147,9 +147,27 @@ Repo中为了算法更稳定，它会寻找多个极值点，在极值点是最�
 
 #### SPPNet(Spatial Pyramid Pooling Net)
 
+之前说到，在RCNN过程中，需要从一张图片中裁剪出的众多区域里提取CNN特征，导致RCNN的训练较慢。而SPP中可以输入不同大小的区域，将其应用于卷积层中，可以使RCNN显著提速。
+
 #### Fast RCNN
 
-WIP
+Fast RCNN同时在softmax分类器和边框回归训练，还在CONV和FC layer之间添加了RoI(Region of Interest)池给每一个候选区域提取一个已修正长度的特征。相比RCNN和SPPNet，Fast RCNN更加高效。
+
+#### Faster RCNN
+
+Faster RCNN用更高效和精确的RPN(Region Proposal Network)来生成候选区域，RPN和Fast RCNN共享CONV特征，然后将其输入分类器或边框中训练，使得计算更高效。
+
+#### RFCN(Region based Convolutional Network)
+
+在RFCN中，没有隐藏的FC layer。RFCN和Faster RCNN的区别仅在于RoI，在Faster RCNN中，RoI之后的计算不能被分享；而在RFCN中，将一些特殊的CONV层作为FCN的输出来构造一套对位置敏感的地图，这些地图上的RoI不同于标准的，其精确度和Faster RCNN差不多，但速度更快。
+
+#### Mask RCNN
+
+Mask RCNN处理轴对象实例分割，分为两个阶段，第一个阶段是RPN，第二阶段则是在分类和边框训练的同时在CNN特征地图上进行FCN。
+
+#### Light Head RCNN
+
+为了提高RFCN的速度，尽可能减少RoI的计算，Li运用了一种大的核分裂卷积来产生更小的特征。
 
 ### Selective Search
 
@@ -188,6 +206,14 @@ $$\tau(C)=k/|C|$$
 对于彩色的图片，这个算法在每个通道上运行，最终两个像素在同一个连通分量里当且仅当它们在各个通道上都在同一个连通分量里。
 
 ### Selective Search剩余算法
+
+## 一阶段模型
+
+### DetectorNet
+
+DetectorNet将边框作为分类问题，给定一个图片，他们用一个网络预测一个大致的格子，然后用四个其余的网络预测出对象的上、下、左、右。Detector必须对每张图片采取重要的样本，然后用网络对每个样本的各部分训练。
+
+### OverFeat
 
 WIP
 
