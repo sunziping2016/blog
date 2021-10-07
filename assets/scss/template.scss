@@ -1,17 +1,37 @@
 // Starter Blog Template
-// https://wowchemy.com/templates/
+// https://wowchemy.com/hugo-themes/
 
 .home-section {
   padding: 3em 0 3em 0;
 }
 
-.home-section.wg-starter-blog-intro {
-  align-items: center;
-  justify-content: center;
+.home-section.wg-about-avatar {
+  padding: 0.2rem 0 0.2rem 0;
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
 }
 
-.home-section.wg-starter-blog-intro .content {
-  text-align: center;
+#profile .network-icon {
+  margin-top: 0.5rem;
+}
+
+ul.network-icon .big-icon {
+  font-size: 1.5rem;
+}
+
+.dark .portrait-title h3 {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: bold;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke: 0.5px black;
+}
+
+.dark .portrait-title h2 {
+  color: #fff;
+  font-weight: bold;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke: 1px black;
 }
 
 .home-section > .content {
@@ -28,12 +48,6 @@
   margin-bottom: 1em;
 }
 
-.home-section .wg-starter-blog-intro h2 {
-  font-size: 2.25em;
-  line-height: 1.25em;
-  letter-spacing: -0.05em;
-}
-
 // Narrower container for Hello World sections (primarily Blank widget content).
 @media (min-width: 1200px) {
   .home-section .container {
@@ -46,8 +60,16 @@
   }
 }
 
-// Prevent stretching on About page with narrow container
+// Custom avatar size on homepage
 .avatar {
+  width: auto;
+  height: auto;
+  max-width: 225px;
+  max-height: 225px;
+}
+
+// Prevent stretching on About page with narrow container
+.wg-about .avatar {
   width: auto;
   height: auto;
   max-width: 200px;
@@ -85,26 +107,13 @@ pre, code {
     counter-increment: h4-counter;
     content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) " ";
   }
+}
 
-  // figure {
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: center;
-  // }
+// Smaller Name and Role text on About page than in homepage `about.avatar` widget
+.wg-about .portrait-title h2 {
+  font-size: 1rem
+}
 
-  // & > figure {
-  //   counter-increment: figure-counter;
-  //   counter-set: subfigure-counter;
-
-  //   & > figcaption::before {
-  //     content: "图 " counter(figure-counter) "：";
-  //     font-weight: bold;
-  //   }
-  // }
-
-  // figure figure > figcaption::before {
-  //   counter-increment: subfigure-counter;
-  //   content: "图 " counter(figure-counter) " (" counter(subfigure-counter, lower-alpha) ")：";
-  //   font-weight: bold;
-  // }
+.wg-about .portrait-title h3 {
+  font-size: .8rem
 }
