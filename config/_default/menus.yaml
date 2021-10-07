@@ -10,6 +10,6 @@ main:
   - name: 分类
     url: categories/
     weight: 30
-  - name: 关于
-    url: about/
+  - name: 作者
+    url: authors/
     weight: 40
