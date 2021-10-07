@@ -92,6 +92,7 @@ marketing:
   google_analytics: ''
   google_tag_manager: ''
   google_site_verification: ''
+  microsoft_clarity: '8rvhp8928v'
 cms:
   branch: main
   local_backend: false
