@@ -215,7 +215,11 @@ DetectorNet将边框作为分类问题，给定一个图片，他们用一个网
 
 ### OverFeat
 
-WIP
+OverFeat产生一组特征向量，每个都代表一个输入的图片中的位置以及可以预测物体的出现。一旦一个物体被识别，相同的特征就会被用来预测一个边框分类器。除此以外，OverFeat能通过处理原始图片六倍大小得到多规模的特征来提高整体表现，并将其整合到一起，得到一个最后的特征向量。OverFeat比RCNN速度更快，但精确度不足。
+
+### YOLO(You Only Look Once)
+
+wip
 
 [^liu2020deep]: Liu, Li, et al. "Deep learning for generic object detection: A survey." *International journal of computer vision* 128.2 (2020): 261-318.
 [^lowe1999object]: Lowe, David G. "Object recognition from local scale-invariant features." *Proceedings of the seventh IEEE international conference on computer vision*. Vol. 2. Ieee, 1999.
