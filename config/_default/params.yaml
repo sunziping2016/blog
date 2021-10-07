@@ -89,7 +89,7 @@ map:
   api_key: ''
   zoom: 15
 marketing:
-  google_analytics: ''
+  google_analytics: 'UA-88008647-1'
   google_tag_manager: ''
   google_site_verification: ''
   microsoft_clarity: '8rvhp8928v'
