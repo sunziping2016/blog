@@ -219,6 +219,50 @@ OverFeat产生一组特征向量，每个都代表一个输入的图片中的位
 
 ### YOLO(You Only Look Once)
 
+不同于其他基于区域的方法，YOLO从图片整体获得特征。YOLO将一张图片分为S*S个格子，每个格子预测C类概率，B个边框和置信分数，这些预测都被编译成S*S*(5B+C)张量。
+
+YOLO容易忽略一些小的对象，因为格子分割是很粗糙的，而每一个格子又只能包含一个对象。
+
+### YOLOv2 and YOLO9000
+
+YOLOv2是YOLO的增强版，用DarkNet19取代了GoogLeNet，优化了现有工作。
+
+YOLO9000用联合优化的方法同时训练了ImageNet和带WordTree的COCO，可以观测9000多个对象类别。
+
+### SSD(Single Shot Detector)
+
+SSD比YOLO更快，并与基于区域检测的检测器，如Faster RCNN有差不多的精确度。SSD高效地结合了Faster RCNN中的RPN、YOLO以及多规模CONV特征实现了更快更精确的检测。和YOLO类似，SSD检测一些修正过的边框，然后从中给对象打分，最后由NMS产生最后的检测结果。
+
+## 基本子问题
+
+### 基于DCNN的对象表示
+
+特征表示已经转移成为了架构的设计问题。
+
+#### 提高对象表示的方法
+
+检测对象通常需要处理大量数据，一个经典的策略是运行能处理大量图片的检测器，但是会受制于时间和内存；另一种是CNN可以一层一层地计算特征层次，子抽样的层会得到一个如金字塔般固定的规模。
+
+三种多规模对象检测：
+
+1. 检测多CNN层的联合特征
+2. 检测多CNN层
+3. 上面两种方法的结合
+
+#### Context Modeling
+
+上下文可以分为三类：
+
+1. 语义上下文：不同场景中对象被发现的可能性不一样
+2. 空间上下文：在不同位置发现对象的可能性不同
+3. 规模上下文：对象有一部分限制的大小和其他场景中的规模相关
+
+##### Global context
+
+根据图片或场景，global context可以作为检测对象的线索。
+
+##### Local context
+
 wip
 
 [^liu2020deep]: Liu, Li, et al. "Deep learning for generic object detection: A survey." *International journal of computer vision* 128.2 (2020): 261-318.
