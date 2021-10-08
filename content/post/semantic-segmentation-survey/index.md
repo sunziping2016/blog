@@ -239,7 +239,7 @@ SSD比YOLO更快，并与基于区域检测的检测器，如Faster RCNN有差�
 
 特征表示已经转移成为了架构的设计问题。
 
-#### 提高对象表示的方法
+### 提高对象表示的方法
 
 检测对象通常需要处理大量数据，一个经典的策略是运行能处理大量图片的检测器，但是会受制于时间和内存；另一种是CNN可以一层一层地计算特征层次，子抽样的层会得到一个如金字塔般固定的规模。
 
@@ -249,7 +249,7 @@ SSD比YOLO更快，并与基于区域检测的检测器，如Faster RCNN有差�
 2. 检测多CNN层
 3. 上面两种方法的结合
 
-#### Context Modeling
+### 上下文建模
 
 上下文可以分为三类：
 
@@ -257,13 +257,25 @@ SSD比YOLO更快，并与基于区域检测的检测器，如Faster RCNN有差�
 2. 空间上下文：在不同位置发现对象的可能性不同
 3. 规模上下文：对象有一部分限制的大小和其他场景中的规模相关
 
-##### Global context
+#### Global context
 
 根据图片或场景，global context可以作为检测对象的线索。
 
-##### Local context
+#### Local context
 
-wip
+Local context考虑到了对象和其周围的区域。一般来说，在对一些对象之间的关系建模时要求不同类、位置、规模的边框是有逻辑的。在深度学习领域，相关模型的研究很有限，具有代表性的有SMN(Spatial Memory Network)、Object Relation Network、SIN(Structure Inference Network)。
+
+### 检测方法
+
+一个好的检测建议应该有以下几种特点：
+
+1. 高回馈，即只需一点建议就可以实现
+2. 建议尽可能精确地匹配对象
+3. 高效
+
+#### 边框建议法
+
+#### 对象分割建议法
 
 [^liu2020deep]: Liu, Li, et al. "Deep learning for generic object detection: A survey." *International journal of computer vision* 128.2 (2020): 261-318.
 [^lowe1999object]: Lowe, David G. "Object recognition from local scale-invariant features." *Proceedings of the seventh IEEE international conference on computer vision*. Vol. 2. Ieee, 1999.
