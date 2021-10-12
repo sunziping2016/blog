@@ -88,27 +88,6 @@ pre, code {
   max-width: 960px;
 }
 
-.article-style {
-  counter-reset: figure-counter h2-counter h3-counter h4-counter equation;
-
-  h2::before {
-    counter-increment: h2-counter;
-    counter-set: h3-counter h4-counter;
-    content: counter(h2-counter) " ";
-  }
-
-  h3::before {
-    counter-increment: h3-counter;
-    counter-set: h4-counter;
-    content: counter(h2-counter) "." counter(h3-counter) " ";
-  }
-
-  h4::before {
-    counter-increment: h4-counter;
-    content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) " ";
-  }
-}
-
 // Smaller Name and Role text on About page than in homepage `about.avatar` widget
 .wg-about .portrait-title h2 {
   font-size: 1rem

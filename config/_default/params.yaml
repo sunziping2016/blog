@@ -64,7 +64,7 @@ copyright_license:
   share_alike: true
   allow_commercial: false
   notice: 'This work is licensed under {license}'
-plugins_js: []
+plugins_js: ['cross-reference']
 avatar:
   gravatar: false
   shape: circle

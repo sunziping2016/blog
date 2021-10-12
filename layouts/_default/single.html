@@ -1,0 +1,34 @@
+{{- define "main" -}}
+<div class="row flex-xl-nowrap justify-content-center">
+    {{/* Show ToC by default. */}}
+    {{ if ne .Params.toc false }}
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+        {{ partial "hooks/page_toc_start" . }}
+
+        <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">{{ i18n "on_this_page" }}</a></li>
+        </ul>
+
+        {{ .TableOfContents }}
+
+        {{ partial "hooks/page_toc_end" . }}
+    </div>
+    {{ end }}
+
+    <article class="article">
+
+        {{ partial "page_header" . }}
+
+        <div class="article-container">
+
+            <div class="article-style">
+                {{ .Content }}
+            </div>
+
+            {{ partial "page_footer" . }}
+
+        </div>
+    </article>
+</div>
+
+{{- end -}}
