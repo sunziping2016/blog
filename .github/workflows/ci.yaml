@@ -44,7 +44,7 @@ jobs:
       run: npm test
 
     - name: Build production website
-      run: hugo -D
+      run: hugo
 
     - name: Deploy to szp15.com
       if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x' }}
