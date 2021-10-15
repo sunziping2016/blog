@@ -130,7 +130,7 @@ $$\begin{gather*}(DF_{up}(X))\newline X[DF_{local}(X)|DF(X)]\end{gather*}$$
 
 首先我们给出支配边界$DF(X)$的形式化定义：
 
-$$DF(X) = \{Y|\exists P\in Pred(Y)(X\underline{\gg}P\land X\rlap{\hspace{.6em}|}\gg Y)\}$$
+$$DF(X) = \\{Y|\exists P\in Pred(Y)(X\underline{\gg}P\land X\rlap{\hspace{.6em}|}\gg Y)\\}$$
 
 直接依据定义计算支配边界会具有很高的复杂度（二次复杂度）。为了以线性于$\sum_X |DF(X)|$的速度计算支配边界，我们对每个节点定义两个中间的集合$DF_{local}$和$DF_{up}$，使得：
 
@@ -138,22 +138,22 @@ $$\begin{equation}DF(X)=DF_{local}(X)\cup\bigcup_{Z\in Children(X)}DF_{up}(Z)\en
 
 对于任意节点$X$，一些$X$的后继可能会对$DF(X)$有贡献，这种贡献$DF_{local}(X)$被定义为：
 
-$$\begin{equation}DF_{local}(X)\stackrel{\text{def}}{=}\{Y\in Succ(X)|X\rlap{\hspace{.6em}|}\gg Y\}\end{equation}$$
+$$\begin{equation}DF_{local}(X)\stackrel{\text{def}}{=}\\{Y\in Succ(X)|X\rlap{\hspace{.6em}|}\gg Y\\}\end{equation}$$
 
 对于任意非Entry的节点$Z$，$DF(Z)$中的一些节点或许会对$DF(idom(Z))$，这种贡献$DF_{up}=(Z)$被定义为：
 
-$$\begin{equation}DF_{up}(Z)\stackrel{\text{def}}{=}\{Y\in DF(Z)|idom(Z)\rlap{\hspace{.6em}|}\gg Y\}\end{equation}$$
+$$\begin{equation}DF_{up}(Z)\stackrel{\text{def}}{=}\\{Y\in DF(Z)|idom(Z)\rlap{\hspace{.6em}|}\gg Y\\}\end{equation}$$
 
 **引理1：** 公式1是正确的。
 
 **引理1证明：** 由于支配关系是自反的，所以公式2中，$X$支配自己，故而$DF_{local}(X)\subseteq DF(X)$。由于支配关系是传递的，所以公式3中的$Z$严格支配$Y$的前驱而$X=idom(Z)$，故而$DF_{up}(X)\subseteq DF(X)$。类似的，我们可以证明$X$的支配边界在其前驱为$X$的情况下在$DF_{local}(X)$中，否则在$DF_{up}(X)$中。
 
 **引理2：** 对于任意节点$X$，
-$$DF_{local}(X)=\{Y\in Succ(X)|idom(Y)\neq X\}$$
+$$DF_{local}(X)=\\{Y\in Succ(X)|idom(Y)\neq X\\}$$
 
 **引理3：** 对于任意节点$X$和它的任意孩子$Z$（支配树上的），
 
-$$\begin{equation}DF_{up}(Z)=\{Y\in DF(Z)|idom(Y)\neq X\}\end{equation}$$
+$$\begin{equation}DF_{up}(Z)=\\{Y\in DF(Z)|idom(Y)\neq X\\}\end{equation}$$
 
 **引理3证明：** 推导公式4可以推导出公式3较为复杂。使用反证法。
 
@@ -162,10 +162,10 @@ $$\begin{equation}DF_{up}(Z)=\{Y\in DF(Z)|idom(Y)\neq X\}\end{equation}$$
 1. 自底向上遍历支配者树上的每个节点$X$：
    1. $DF(X)\leftarrow\emptyset$
    2. 对于每个$Y\in Succ(X)$：
-      1. 如果$idom(Y)\neq X$，则$DF(X)\leftarrow DF(X)\cup\{Y\}$（计算$DF_{local}(X)$）
+      1. 如果$idom(Y)\neq X$，则$DF(X)\leftarrow DF(X)\cup\\{Y\\}$（计算$DF_{local}(X)$）
    3. 对于每个$Z\in Children(X)$：
       1. 对于每个$Y\in DF(Z)$：
-         1. 如果$idom(Y)\neq X$，则$DF(X)\leftarrow DF(X)\cup\{Y\}$（计算$DF_{up}(X)$）
+         1. 如果$idom(Y)\neq X$，则$DF(X)\leftarrow DF(X)\cup\\{Y\\}$（计算$DF_{up}(X)$）
 
 $DF_{local}(X)$总的计算时间为$O(|E|)$（$E$为CFG的边集），$DF_{up}(X)$总的计算时间正比于所有$DF$的大小和，最坏情况为$O(|N|^2)$（$N$为CFG的顶点集），但通常而言，$DF_{up}(X)$的计算时间是线性的。
 
@@ -190,9 +190,9 @@ DF_{i+1}=DF(S\cup DF_i)
 如果$S$是某变量$V$的赋值节点集合，我们会证明（这个定理依赖于$V$的定义在Entry）：
 $$J^+(S)=DF^+(S)$$
 
-**引理4：** 对任意CFG中非空路径$p:X\xrightarrow{+}Z$，存在路径上的一个节点$X'\in\{X\}\cup DF^+(\{X\})$支配$Z$。除非$X$支配$p$的每个节点，$X'\in DF^{+}({X})$。
+**引理4：** 对任意CFG中非空路径$p:X\xrightarrow{+}Z$，存在路径上的一个节点$X'\in\\{X\\}\cup DF^+(\\{X\\})$支配$Z$。除非$X$支配$p$的每个节点，$X'\in DF^{+}({X})$。
 
-**引理5：** 对CFG中两个不同的节点$X,Y$，若有非空路径$p:X\xrightarrow{+}Z$和$q:Y\xrightarrow{+}Z$交汇于$Z$。那么$Z\in DF^+(\{X\})\cup DF^+(\{Y\})$。
+**引理5：** 对CFG中两个不同的节点$X,Y$，若有非空路径$p:X\xrightarrow{+}Z$和$q:Y\xrightarrow{+}Z$交汇于$Z$。那么$Z\in DF^+(\\{X\\})\cup DF^+(\\{Y\\})$。
 
 **引理5证明：** 假设$X'$和$Y'$分别是引理4中$p$和$q$存在的节点。$X'$在$q$上时，即$X'=Z$，只需要考虑$Z=X$的情况，此时$Z\in DF(X)\subseteq DF^+(X)$。同理$Y'$在$p$上也成立。如果$X'$不在$q$上且$Y'$不在$p$上，则可以推导出$X'$和$Y'$支配$Z$，进而推导出$X'$支配$Y'$或$Y'$支配$X'$，与交汇定义矛盾（存在中间交点）。
 

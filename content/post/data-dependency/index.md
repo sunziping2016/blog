@@ -5,7 +5,7 @@ tags: [静态分析]
 categories: [静态分析]
 date: 2021-09-28T17:20:26+08:00
 featured: false
-draft: false
+draft: true
 ---
 
 这篇文章总结了DFST、支配、归约的各种性质和算法，并最终给出路径摘要的方案。上一篇文章的链接在这里：[从CFG直接构建GSA的算法]({{< relref "/post/build-gsa-from-cfg/index.md" >}})。
@@ -22,9 +22,9 @@ draft: false
 
 ## 数据依赖的定义
 
-数据依赖是定义在合并基本块<x-comment>（入边数目大于等于2的基本块）</x-comment>的入边上的，它表示的是**从该基本块的立即支配者到该基本块的无环路径成立所需要满足的所有条件**。
+数据依赖是定义在合并基本块<x-comment>（入边数目大于等于2的基本块）</x-comment>的入边上的，它表示的是**从立即支配者到该基本块的简单路径或简单回路成立所需要满足的条件**。
 
-本文中的控制流图（CFG）是指**带入口节点$Entry$、可以有重边、可以有自环的有向图**，并满足**可达性**，即存在从$Entry$到任意节点的路径。
+本文中的控制流图（CFG）是指**带入口节点$Entry$、可以有重边、可以有自环的有向图**；此外还需要满足**可达性**，即存在从$Entry$到任意节点的路径。
 
 <x-figure src="./example-cfg.svg" id="fig:example-cfg">示例CFG</x-figure>
 
@@ -45,7 +45,7 @@ draft: false
 
 </x-table>
 
-接下来，我讲解可归约CFG上的路径摘要算法的原理和实现。路径摘要算法可以用于快速地求解数据依赖条件，也可以用于求解某些<x-wip>前向数据流分析</x-wip>。
+接下来，我将讲解可归约CFG上路径摘要算法的原理和实现。路径摘要算法可以用于快速地求解数据依赖条件，也可以用于求解某些<x-wip>前向数据流分析</x-wip>。
 
 ## 路径摘要算法的步骤
 
@@ -134,7 +134,7 @@ $$\mathrm{RevPostOrder}(u)>\mathrm{RevPostOrder}(v)$$
 
 <x-figure src="./variant-cycle-set.svg" id="fig:variant-cycle-set">展示了回边集合和非循环边集合会随DFST变化</x-figure>
 
-但如果控制流图可归约，那么DFST对应的回边集合和非循环边集合是不会变的。这也就是<x-ref-figure ref="fig:dfst-edge"></x-ref-figure>的第3个性质，具体细节会<x-wip>在归约章节讨论</x-wip>。
+但如果CFG可归约，那么DFST对应的回边集合和非循环边集合是不会变的。这也就是<x-ref-figure ref="fig:dfst-edge"></x-ref-figure>的第3个性质，具体细节会<x-wip>在归约章节讨论</x-wip>。
 
 ## 支配树
 
@@ -158,11 +158,11 @@ CFG上，节点$x$**支配**节点$y$，是指从$Entry$到$y$的每条路径都
 
 </x-card>
 
-<x-ref-theorem ref="th:dom-rec"></x-ref-theorem>说明了严格支配关系的必要条件，但对于一般的CFG，这不是充分条件，详见<x-ref-heading ref="一般控制流图的迭代支配算法"></x-ref-heading>。
+<x-ref-theorem ref="th:dom-rec"></x-ref-theorem>说明了严格支配关系的必要条件，但对于一般的CFG，这不是充分条件，详见<x-ref-heading ref="一般cfg的迭代支配算法"></x-ref-heading>。
 
-#### DAG控制流图的支配算法
+#### DAG CFG的直接支配算法
 
-<x-ref-formula ref="eq:dom-rec"></x-ref-formula>是否可以递归？对于DAG控制流图，我们发现这个定义是个**结构递归**<x-comment>（可以找到一种顺序，在求$\mathrm{StrictDoms}(x)$时，对任意$y\in\mathrm{Pred}(x)$，$\mathrm{StrictDoms}(y)$已经求出）</x-comment>，因而对于任意基本块$x$，满足上式的$\mathrm{StrictDoms}(x)$是唯一确定的，并且按照拓扑排序即可在确定的时间内完成计算。在<x-wip>稍后的章节中</x-wip>，我们将看到这个递归算法在忽略回边的情况下，同样适用于可归约图。
+<x-ref-formula ref="eq:dom-rec"></x-ref-formula>是否可以递归？对于DAG CFG，我们发现这个定义是个**结构递归**<x-comment>（可以找到一种顺序，在求$\mathrm{StrictDoms}(x)$时，对任意$y\in\mathrm{Pred}(x)$，$\mathrm{StrictDoms}(y)$已经求出）</x-comment>，因而对于任意基本块$x$，满足上式的$\mathrm{StrictDoms}(x)$是唯一确定的，并且按照拓扑排序即可在确定的时间内完成计算。在<x-wip>稍后的章节中</x-wip>，我们将看到这个递归算法在忽略回边的情况下，同样适用于可归约图。
 
 实际计算中，如果用bit vector作为集合，其集合的交并运算非常复杂，并且没有完全利用支配的“树”的性质。注意到：
 
@@ -190,9 +190,15 @@ $$\mathrm{idom}(x)=\max(\mathrm{StrictDoms}(x))$$
 </x-pseudo-code>
 </x-card>
 
+实际实现中，按拓扑序进行插入即可避免<x-ref-algorithm ref="lst:dag-dom-tree"></x-ref-algorithm>中循环的判断。而逆后序遍历恰好是DAG的一种拓扑排序。
+
+<!--
+
 实际实现中，给每个节点一个计数器，初始化为入边的数量。使用一个队列，初始化只包含$Entry$。每次处理一个基本块后，遍历出边，减少终止节点的计数器，减到0了，就加入队列。所以不考虑$\mathrm{LCA}(\mathrm{Pred}(x))$的计算量时，复杂度为$\mathcal{O}(|E|)$（$E$为CFG的边集）。
 
 有趣的是，你会发现这个算法是F. Allen求interval算法的一个进阶版。<x-wip>值得深挖！</x-wip>
+
+-->
 
 #### $\mathrm{LCA}$的计算
 
@@ -254,11 +260,11 @@ $$\forall y(y\in\mathrm{Descendants}\_{DomTree}(x)\rightarrow\mathrm{RevPostOrde
 3. 找到$N\_1$的父亲$N\_0$<x-comment>（分支2）</x-comment>
 4. 得出：$\mathrm{LCA}(N\_4,N\_3) = N\_0$
 
-#### 一般控制流图的迭代支配算法
+#### 一般CFG的迭代支配算法
 
-对于一般的控制流图，<x-ref-formula ref="eq:dom-rec"></x-ref-formula>不是结构递归，甚至单单这个式子，作为方程都无法确定唯一解，<x-ref-figure ref="fig:non-dag-dom"></x-ref-figure>是个最小的例子。
+对于一般的CFG，<x-ref-formula ref="eq:dom-rec"></x-ref-formula>不是结构递归，甚至单单这个式子，作为方程都无法确定唯一解，<x-ref-figure ref="fig:non-dag-dom"></x-ref-figure>是个最小的例子。
 
-<x-figure src="./non-dag-dom.svg" id="fig:non-dag-dom">一般控制流图<x-ref-formula ref="eq:dom-rec"></x-ref-formula>无唯一解示例</x-figure>
+<x-figure src="./non-dag-dom.svg" id="fig:non-dag-dom">一般CFG<x-ref-formula ref="eq:dom-rec"></x-ref-formula>无唯一解示例</x-figure>
 
 <x-ref-figure ref="fig:non-dag-dom"></x-ref-figure>中的例子提醒我们，如果采用迭代算法，算法的最终不动点和初值有关，且某些不动点是错误的解<x-comment>（不完整的解）</x-comment>。那么什么解是正确的呢？其实观察上面的两个解，你就可以猜到是那个偏序关系最丰富，树最高的那个解。这里给出其形式化描述以及证明。
 
@@ -302,37 +308,23 @@ $$\mathrm{X}(x)\subseteq\\{w\_i\mid 0\leq i\leq k-1\\}$$
 
 这个算法正是<x-warning comment="引用不当">K. Cooper的快速支配树算法</x-warning>。
 
-#### 一般控制流图的增量支配算法
+#### 一般CFG的增量支配算法
 
-<!-- 增量支配树算法
+我们知道：树的支配树就是其本身。因此只考虑树边时，CFG的支配树就是其DFST。这可以作为一个开始，然后逐个考虑其他边，不断调整支配树，最终得到整个CFG的支配树。这个思路也是有价值的：
 
-CFG的边在支配树上的体现：不存在从支配树上层到下层，又不是树边的边，即只存在树边、水平的交叉边和回边。
+- 作为增量算法，可以应对不断扩增的CFG
+- 中间步骤得到的支配树都具有意义
 
--->
+<!-- 是否对某些CFG，性能上还更优？ -->
+
+<!-- DFST子图 -->
 
 <!--
-          First Pass  Second Pass
-{5}       {5}         {5}
-{5,4}     {5,4}       {5,4}
-{5,3}     {5,3}       {5,3}
-{5,3,2}   {5,3,2}     {5,2}
-{5,3,2,1} {5,1}       {5,1}
 
- 5
-/ \
-4  3
-   |
-   2
-   |
-   1
+CFG上边$(s,e)$在$DomTree$上有$\mathrm{Parent}(e)\in\mathrm{Ancestors}(s)$。
 
-  5
-/ | \
-4 3  1
-  |
-  2
+支配子树在DFST上是连通的。
 
-   5
-/ / \ \
-4 3  1 2
 -->
+
+### 支配边界算法
