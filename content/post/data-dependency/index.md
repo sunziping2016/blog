@@ -5,7 +5,7 @@ tags: [静态分析]
 categories: [静态分析]
 date: 2021-09-28T17:20:26+08:00
 featured: false
-draft: true
+draft: false
 ---
 
 这篇文章总结了DFST、支配、归约的各种性质和算法，并最终给出路径摘要的方案。上一篇文章的链接在这里：[从CFG直接构建GSA的算法]({{< relref "/post/build-gsa-from-cfg/index.md" >}})。
@@ -104,10 +104,12 @@ draft: true
 2. 自环：$\mathrm{PreOrder}(u)=\mathrm{PreOrder}(v)$
 3. 其他边：$\mathrm{PreOrder}(u)>\mathrm{PreOrder}(v)$<x-comment>（指向已经搜索过的节点，回溯）</x-comment>
 
+逆命题同样成立：任何一棵生成树，如果有$\mathrm{PreOrder}$满足了上面的三个性质，它就可以是以$\mathrm{PreOrder}$为发现顺序的深度优先生成树。
+
 </x-theorem>
 </x-card>
 
-<x-ref-theorem ref="th:dfst-pre-order"></x-ref-theorem>的逆命题同样成立：任何一棵生成树，如果有$\mathrm{PreOrder}$满足了上面的三个性质，它就可以是以$\mathrm{PreOrder}$为发现顺序的DFST。<x-ref-theorem ref="th:dfst-pre-order"></x-ref-theorem>可以有两个重要的推论，如下：
+<x-ref-theorem ref="th:dfst-pre-order"></x-ref-theorem>可以有两个重要的推论，如下：
 
 <x-card>
 <x-theorem id="th:non-cycle-dag">
@@ -183,7 +185,7 @@ $$\mathrm{idom}(x)=\max(\mathrm{StrictDoms}(x))$$
 <x-algorithm id="lst:dag-dom-tree">DAG形式CFG的支配树算法。</x-algorithm>
 <x-pseudo-code for="lst:dag-dom-tree">
 
-1. 将$Entry$节点构成一颗单节点树$DomTree$
+1. 将$Entry$节点构成一颗单节点树$DomTree$<x-comment>（初始化）</x-comment>
 2. 循环：如果还存在一个基本块$x$，满足$x\notin DomTree\land\mathrm{Pred}(x)\subseteq DomTree$：
    1. 以$\mathrm{LCA}(\mathrm{Pred}(x))$为父亲，将$x$插入到$DomTree$上
 
@@ -207,36 +209,38 @@ $$\mathrm{idom}(x)=\max(\mathrm{StrictDoms}(x))$$
 多元素集合上的$\mathrm{LCA}(S)$可以归结为两个变量的$\mathrm{LCA}(a, b)$<x-comment>（因为$\mathrm{LCA}$有结合律）</x-comment>。单元素集合上的$\mathrm{LCA}(\\{x\\})=x$。空集上的$\mathrm{LCA}(\varnothing)$是ill-defined<x-comment>（因为$\mathrm{LCA}$无单位元）</x-comment>。在所有基本块可达的情况下，如果$x\neq Entry$，则$\mathrm{Pred}(x)\neq\varnothing$，所以<x-ref-formula ref="eq:idom-lca"></x-ref-formula>定义良好。接下来就考虑如何快速地求解两个变量的$\mathrm{LCA}(a, b)$。
 
 <x-card>
-<x-theorem id="th:dom-post-order">支配树上的祖父子孙关系，在DFST上得到了保留。精确地来说：
+<x-theorem id="th:dfst-gt-dom">支配树上的祖父子孙关系，在DFST上得到了保留。精确地来说：
 
 $$\begin{cases}\mathrm{Ancestors}\_{DomTree}(x)=\mathrm{Doms}(x)\subseteq\mathrm{Ancestors}\_{DFST}(x)\\\\\mathrm{Descendants}\_{DomTree}(x)=\mathrm{Doms}^{-1}(x)\subseteq\mathrm{Descendants}\_{DFST}(x)\end{cases}$$
 
+<x-ref-theorem ref="th:dom-seq"></x-ref-theorem>是更一般的情况。
+
 </x-theorem>
-<x-proof for="th:dom-post-order">从支配的定义得到。</x-proof>
+<x-proof for="th:dfst-gt-dom">从支配的定义得到。</x-proof>
 </x-card>
 
 类似地，我们也有：
 
 $$\mathrm{StrictAncestors}\_{DomTree}(x)=\mathrm{StrictDoms}(x)\subseteq\mathrm{StrictAncestors}\_{DFST}(x)$$
 
-形象地来说，支配者树比DFST更加扁。一个等价的描述是：如果将树的自上而下视作一个偏序关系，那么支配树的偏序关系是DFST偏序关系的子集；另一个更有趣的描述是：支配树的偏序关系是所有DFST偏序关系的交。个人最喜欢的描述是：**支配树是DFST中的某些支干重新接到了祖先上形成的新树**。而这个描述将很好地体现在<x-ref-algorithm ref="lst:dom-tree"></x-ref-algorithm>。<x-ref-figure ref="fig:dom-dfst-relation"></x-ref-figure>是一个例子。
+形象地来说，支配者树比DFST更加扁。一个等价的描述是：如果将树的自上而下视作一个偏序关系，那么支配树的偏序关系是DFST偏序关系的子集；另一个更有趣的描述是：支配树的偏序关系是所有DFST偏序关系的交。个人最喜欢的描述是：**支配树是DFST中的某些支干重新接到了祖先上形成的新树**。而这个描述将很好地体现在<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>。<x-ref-figure ref="fig:dom-dfst-relation"></x-ref-figure>是一个例子。
 
 <x-figure src="./dom-dfst-relation.svg" id="fig:dom-dfst-relation">DFST与支配树之间的关系</x-figure>
 
 基于此，可以下面的定理：
 
 <x-card>
-<x-theorem id="th:dom-post-order2">若DFST上对基本块$x$的逆后序遍历编号$\mathrm{RevPostOrder}(x)$，则支配树上，其子孙的$\mathrm{RevPostOrder}$大于等于$\mathrm{RevPostOrder}(x)$
+<x-theorem id="th:dom-post-order">若DFST上对基本块$x$的逆后序遍历编号$\mathrm{RevPostOrder}(x)$，则支配树上，其子孙的$\mathrm{RevPostOrder}$大于等于$\mathrm{RevPostOrder}(x)$
 
 $$\forall y(y\in\mathrm{Descendants}\_{DomTree}(x)\rightarrow\mathrm{RevPostOrder}(y)\geq\mathrm{RevPostOrder}(x))$$
 
 </x-theorem>
-<x-proof for="th:dom-post-order2">从<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>和逆后序遍历的性质得到。</x-proof>
+<x-proof for="th:dom-post-order">从<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>和逆后序遍历的性质得到。</x-proof>
 </x-card>
 
 有些时候我们会想能不能得到更强的定理：支配树上也一定存在一种先序遍历<x-comment>（等价表述“逆后序遍历”）</x-comment>的结果和DFST的逆后序遍历一样？答案是否定的，见<x-ref-figure ref="fig:dom-dfst-relation"></x-ref-figure>。
 
-基于<x-ref-theorem ref="th:dom-post-order2"></x-ref-theorem>就有了下面的算法。
+基于<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>就有了下面的算法。
 
 <x-card>
 <x-algorithm id="lst:dom-lca">支配树上$\mathrm{LCA}(a, b)$的算法。</x-algorithm>
@@ -293,33 +297,58 @@ $$\mathrm{X}(x)\subseteq\\{w\_i\mid 0\leq i\leq k-1\\}$$
 
 基于<x-ref-theorem ref="th:dom-solution-max"></x-ref-theorem>，我们可以给出一个迭代算法的思路。先用一个**偏大的集合**初始化所有$\mathrm{StrictDoms}$。而后不断迭代，不断缩小$\mathrm{StrictDoms}$，剔除其中肯定错误的元素<x-comment>（所有更小的合法解都不包含的元素）</x-comment>。那么，这个**偏大的集合**可以是什么呢？所有CFG节点自然是一个很粗暴且正确的想法。
 
-考虑<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>：支配树的偏序关系是DFST的子集。用DFST作为初始的支配树是完全可行的。于是我们就有了下面的算法：
+考虑<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>：支配树的偏序关系是DFST的子集。用DFST作为初始的支配树是完全可行的。于是我们就有了下面的算法：
 
 <x-card>
-<x-algorithm id="lst:dom-tree">一般CFG的支配树算法。</x-algorithm>
-<x-pseudo-code for="lst:dom-tree">
+<x-algorithm id="lst:dom-tree-iter">一般CFG的迭代支配树算法。</x-algorithm>
+<x-pseudo-code for="lst:dom-tree-iter">
 
-1. 用某个DFST初始化$DomTree$
+1. 用某个DFST初始化$DomTree$<x-comment>（初始化）</x-comment>
 2. 循环：如果树上有一个节点$x$，满足$\mathrm{Parent}(x)\neq\mathrm{LCA}(\mathrm{Pred}(x))$：
    1. 更新$\mathrm{Parent}(x)$为$\mathrm{LCA}(\mathrm{Pred}(x))$<x-comment>（移动了一整棵子树到某个祖先上）</x-comment>
 
 </x-pseudo-code>
 </x-card>
 
-这个算法正是<x-warning comment="引用不当">K. Cooper的快速支配树算法</x-warning>。
+实现上，由于循环体可能会触发很多节点重新计算，一般是多次逆后序遍历，直到一次更改也不发生。这个算法正是<x-warning comment="引用不当">K. Cooper的快速支配树算法</x-warning>。
 
 #### 一般CFG的增量支配算法
+
+已知某CFG的支配树，能否快速求出新增节点或边后新CFG的支配树吗？
+
+先考虑新增一个节点$x$。为了保证CFG的可达性，在新增节点的同时还需要一条边$(s, x)$。此时，以$s$为父亲，插入$x$到$DomTree$上即可。
+
+再考虑新增一条边的情况。需要下面的定理来导出算法。
+
+<x-card>
+<x-theorem id="th:dom-order">若原CFG的支配树为$DomTree$，添加若干边后的支配树为$DomTree'$，那么一定有：
+
+$$\begin{cases}\mathrm{Ancestors}\_{DomTree'}(x)\subseteq\mathrm{Ancestors}\_{DomTree}(x)\\\\\mathrm{Descendants}\_{DomTree'}(x)\subseteq\mathrm{Descendants}\_{DomTree}(x)\end{cases}$$
+
+<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>是原CFG为树的一个特例。
+
+</x-theorem>
+</x-card>
+
+依据<x-ref-theorem ref="th:dom-order"></x-ref-theorem>，修改<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>的“初始化”为“用原CFG的支配树初始化$DomTree$”，就可以得到增量支配算法。但<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>的循环如果还采用遍历所有节点、计算所有前驱的方式，就显得太盲目了。所以，我们有两个待解决问题：
+
+1. 新增一条边后，如何快速地找出需要更新的节点？
+2. 以什么顺序添加节点和边能最快地增量构造支配树？
+
+##### 支配树上最小范围的更新传播
+
+##### 最快的CFG增量顺序
+
+#### 算法比较
+
+<!--
 
 我们知道：树的支配树就是其本身。因此只考虑树边时，CFG的支配树就是其DFST。这可以作为一个开始，然后逐个考虑其他边，不断调整支配树，最终得到整个CFG的支配树。这个思路也是有价值的：
 
 - 作为增量算法，可以应对不断扩增的CFG
 - 中间步骤得到的支配树都具有意义
 
-<!-- 是否对某些CFG，性能上还更优？ -->
-
-<!-- DFST子图 -->
-
-<!--
+接下来，我们来考虑对新增加的边调整支配树的算法。实际上，想<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>的初始
 
 CFG上边$(s,e)$在$DomTree$上有$\mathrm{Parent}(e)\in\mathrm{Ancestors}(s)$。
 

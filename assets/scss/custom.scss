@@ -1,31 +1,33 @@
-
 x-card {
     display: block;
-    box-shadow: 0 0.5px 3px rgba(0,0,0,0.3);
+    box-shadow: 0 0.5px 3px rgba(0, 0, 0, 0.3);
     padding: 1rem;
-    border-radius: .2rem;
-    margin: 1rem .5rem;
+    border-radius: 0.2rem;
+    margin: 1rem 0.5rem;
 }
 
-x-card > *:last-child, x-card > * > *:last-child {
+x-card > *:last-child,
+x-card > * > *:last-child {
     margin-bottom: 0;
 }
 
 x-comment {
-    opacity: .5;
+    opacity: 0.5;
 }
 
-x-wip, .warning {
+x-wip,
+.warning {
     background-color: #ffeb3b;
     overflow: visible;
-    padding: .2em;
-    margin: 0 .2em;
-    border-radius: .2em;
+    padding: 0.2em;
+    margin: 0 0.2em;
+    border-radius: 0.2em;
     box-shadow: 0 0 2px #9d8c00;
 }
 
-x-wip sup, .warning sup {
-    opacity: .6;
+x-wip sup,
+.warning sup {
+    opacity: 0.6;
 }
 
 x-wip {
@@ -33,29 +35,34 @@ x-wip {
 }
 
 x-wip::before {
-    content: '🚧'
+    content: "🚧";
 }
 
 x-wip sup::before {
-    content: '[施工中]'
+    content: "[施工中]";
 }
 
-.warning, .warning {
+.warning,
+.warning {
     color: red !important;
 }
 
 .warning::before {
-    content: '⚠️'
+    content: "⚠️";
 }
 
-x-theorem, x-proof, x-algorithm, x-pseudo-code {
+x-theorem,
+x-proof,
+x-algorithm,
+x-pseudo-code {
     display: block;
-    margin: .5em 0;
+    margin: 0.5em 0;
 }
 
-x-theorem .theorem-label, x-proof .proof-label {
+x-theorem .theorem-label,
+x-proof .proof-label {
     font-weight: bold;
-    margin-right: .5em;
+    margin-right: 0.5em;
     color: darkblue;
 }
 
@@ -66,24 +73,30 @@ x-proof > p:last-of-type {
 x-proof .proof-qed {
     display: block;
     border: 1px solid black;
-    width: .9em;
-    height: .9em;
-    margin : .3em .3em .3em auto;
+    width: 0.9em;
+    height: 0.9em;
+    margin: 0.3em 0.3em 0.3em auto;
 }
 
-x-ref-theorem, x-ref-algorithm, x-ref-figure, x-ref-table, x-ref-formula, x-ref-heading {
+x-ref-theorem,
+x-ref-algorithm,
+x-ref-figure,
+x-ref-table,
+x-ref-formula,
+x-ref-heading {
     display: inline-block;
-    margin-left: .1em;
-    margin-right: .1em;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
 }
 
 x-ref-theorem .ref-theorem-label {
     color: darkblue;
 }
 
-x-algorithm .algorithm-label, x-pseudo-code .pseudo-code-label {
+x-algorithm .algorithm-label,
+x-pseudo-code .pseudo-code-label {
     font-weight: bold;
-    margin-right: .5em;
+    margin-right: 0.5em;
     color: darkgreen;
 }
 
@@ -91,14 +104,15 @@ x-ref-algorithm .ref-algorithm-label {
     color: darkgreen;
 }
 
-img + figcaption, table + figcaption {
+img + figcaption,
+table + figcaption {
     margin-top: 1em;
     font-size: 1em;
 }
 
 figure .figure-label {
     font-weight: bold;
-    margin-right: .5em;
+    margin-right: 0.5em;
     color: darkmagenta;
 }
 
@@ -108,7 +122,7 @@ x-ref-figure .ref-figure-label {
 
 figure .table-label {
     font-weight: bold;
-    margin-right: .5em;
+    margin-right: 0.5em;
     color: darkred;
 }
 
@@ -133,7 +147,6 @@ table > thead > tr > th {
     border-bottom: 1px solid black;
 }
 
-
 table tbody {
     border-bottom: 2px solid black;
 }
@@ -153,7 +166,7 @@ x-formula {
     flex-wrap: wrap;
 }
 
-x-formula > span:first-child {
+x-formula > mjx-container:first-child {
     display: block;
     flex-grow: 1;
     max-width: 100%;
@@ -167,13 +180,13 @@ x-formula .formula-label {
 }
 
 x-formula .formula-label::before {
-  content: "(";
-  padding-right: .1em;
+    content: "(";
+    padding-right: 0.1em;
 }
 
 x-formula .formula-label::after {
-  content: ")";
-  padding-left: .1em;
+    content: ")";
+    padding-left: 0.1em;
 }
 
 x-ref-formula .ref-formula-label {
@@ -181,7 +194,7 @@ x-ref-formula .ref-formula-label {
 }
 
 .heading-label {
-    margin-right: .5em;
+    margin-right: 0.5em;
     color: darkslateblue;
 }
 
@@ -191,8 +204,74 @@ x-ref-heading .ref-heading-label {
 
 html {
     scroll-behavior: smooth;
+    font-size: unset;
 }
 
 article {
     min-width: 0;
+}
+
+.docs-toc,
+.toc-top li a,
+#TableOfContents li a {
+    font-size: 0.9rem;
+}
+
+#TableOfContents ul {
+    max-width: 100%;
+}
+
+#TableOfContents a {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.article-container {
+    max-width: 840px;
+}
+
+.card-simple .article-title,
+.media.stream-item .article-title {
+    font-size: 1.4rem;
+}
+
+.card-simple .article-style,
+.media.stream-item .article-style {
+    margin-top: 2px;
+    font-size: 1rem;
+}
+
+.docs-toc {
+    max-width: 240px;
+}
+
+.post-nav {
+    font-size: 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.7rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4,
+h5,
+h6 {
+    font-size: 1.25rem;
+}
+
+table {
+    font-size: 1rem;
 }
