@@ -42,8 +42,9 @@ class XTheorem extends HTMLElement {
         this.setAttribute('id', name);
         theorems.push(this);
         theoremIndices[name] = index;
+        this.labelText = this.getAttribute('label') || '定理';
         const label = document.createElement('a');
-        label.appendChild(document.createTextNode(`定理 ${index + 1}`));
+        label.appendChild(document.createTextNode(`${this.labelText} ${index + 1}`));
         label.setAttribute('href', `#${name}`);
         label.classList.add('theorem-label');
         this.insertBefore(label, this.firstChild);
@@ -312,7 +313,8 @@ refTheorems.forEach(th => {
     const label = th.label;
     if (name !== null && theoremIndices[name] !== undefined) {
         const index = theoremIndices[name];
-        label.firstChild.nodeValue = `定理 ${index + 1}`;
+        const labelText = theorems[index].labelText;
+        label.firstChild.nodeValue = `${labelText} ${index + 1}`;
         label.classList.remove('warning');
         label.setAttribute('href', `#${name}`);
     }
@@ -362,17 +364,22 @@ refFormulas.forEach(eq => {
     }
 });
 
-const headings = Array.from(document.querySelectorAll('h2, h3, h4')).filter(h => h.getAttribute('id') !== null);
+const headings = Array.from(document.querySelectorAll('h2, h3, h4, h5')).filter(h => h.getAttribute('id') !== null);
 const headingIndices = {};
 const headingLevels = {
     'H2': 1,
     'H3': 2,
     'H4': 3,
+    'H5': 4,
+    'H6': 5,
 }
+const headingMaxDisplayedLevel = 3;
 const headingCategories = {
     'H2': '章',
     'H3': '节',
     'H4': '小节',
+    'H5': '小小节',
+    'H6': '小小小节',
 }
 const headingCounters = [];
 
@@ -390,12 +397,14 @@ headings.forEach((h, idx) => {
         }
         if (level > 0) {
             ++headingCounters[headingCounters.length - 1];
-            const label = document.createElement('a');
             h.label = headingCounters.join('.');
-            label.appendChild(document.createTextNode(h.label));
-            label.setAttribute('href', `#${name}`);
-            label.classList.add('heading-label');
-            h.insertBefore(label, h.firstChild);
+            if (level <= headingMaxDisplayedLevel) {
+                const label = document.createElement('a');
+                label.appendChild(document.createTextNode(h.label));
+                label.setAttribute('href', `#${name}`);
+                label.classList.add('heading-label');
+                h.insertBefore(label, h.firstChild);
+            }
         }
     }
 });

@@ -22,9 +22,16 @@ draft: false
 
 ## 数据依赖的定义
 
-数据依赖是定义在合并基本块<x-comment>（入边数目大于等于2的基本块）</x-comment>的入边上的，它表示的是**从立即支配者到该基本块的简单路径或简单回路成立所需要满足的条件**。
+<x-card>
+<x-theorem id="th:data-dependency-def" label="定义">数据依赖是定义在合并基本块<x-comment>（入边数目大于等于2的基本块）</x-comment>的入边上的，它表示的是：
 
-本文中的控制流图（CFG）是指**带入口节点$Entry$、可以有重边、可以有自环的有向图**；此外还需要满足**可达性**，即存在从$Entry$到任意节点的路径。
+- 如果该边**是循环回边**：以该边结束，从**该基本块**到其本身的**简单回路**成立的条件；
+- 如果该边**不是循环回边**：以该边结束，从**该基本块的立即支配者**到其本身的**简单路径**成立的条件。
+
+</x-theorem>
+</x-card>
+
+本文中的控制流图（CFG）是指**带入口节点$Entry$、可以有重边、可以有自环的有向图**；此外还需要满足**可达性**，即存在从$Entry$到任意节点的路径。<x-comment>（所有算法应当能容忍$Entry$有入边的情况，虽然这是次要的）</x-comment>
 
 <x-figure src="./example-cfg.svg" id="fig:example-cfg">示例CFG</x-figure>
 
@@ -213,7 +220,7 @@ $$\mathrm{idom}(x)=\max(\mathrm{StrictDoms}(x))$$
 
 $$\begin{cases}\mathrm{Ancestors}\_{DomTree}(x)=\mathrm{Doms}(x)\subseteq\mathrm{Ancestors}\_{DFST}(x)\\\\\mathrm{Descendants}\_{DomTree}(x)=\mathrm{Doms}^{-1}(x)\subseteq\mathrm{Descendants}\_{DFST}(x)\end{cases}$$
 
-<x-ref-theorem ref="th:dom-seq"></x-ref-theorem>是更一般的情况。
+<x-ref-theorem ref="th:dom-order"></x-ref-theorem>是更一般的情况。
 
 </x-theorem>
 <x-proof for="th:dfst-gt-dom">从支配的定义得到。</x-proof>
@@ -316,7 +323,7 @@ $$\mathrm{X}(x)\subseteq\\{w\_i\mid 0\leq i\leq k-1\\}$$
 
 已知某CFG的支配树，能否快速求出新增节点或边后新CFG的支配树吗？
 
-先考虑新增一个节点$x$。为了保证CFG的可达性，在新增节点的同时还需要一条边$(s, x)$。此时，以$s$为父亲，插入$x$到$DomTree$上即可。
+先考虑新增一个节点$x$。为了保证CFG的可达性，在新增节点的同时还需要新增一条边$(s, x)$。此时，以$s$为父亲，插入$x$到$DomTree$上即可。
 
 再考虑新增一条边的情况。需要下面的定理来导出算法。
 
@@ -332,28 +339,35 @@ $$\begin{cases}\mathrm{Ancestors}\_{DomTree'}(x)\subseteq\mathrm{Ancestors}\_{Do
 
 依据<x-ref-theorem ref="th:dom-order"></x-ref-theorem>，修改<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>的“初始化”为“用原CFG的支配树初始化$DomTree$”，就可以得到增量支配算法。但<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>的循环如果还采用遍历所有节点、计算所有前驱的方式，就显得太盲目了。所以，我们有两个待解决问题：
 
-1. 新增一条边后，如何快速地找出需要更新的节点？
-2. 以什么顺序添加节点和边能最快地增量构造支配树？
+1. 新增一条边后，如何快速地找出需要更新的节点？见<x-ref-heading ref="支配树上最小范围的更新传播"></x-ref-heading>。
+2. 以什么顺序添加节点和边能较快地增量构造支配树？见<x-ref-heading ref="快速cfg增量顺序"></x-ref-heading>。
 
 ##### 支配树上最小范围的更新传播
 
-##### 最快的CFG增量顺序
+新增一条边后$(s, x)$，只有$x$的前驱集可能发生了变化，即：
+
+$$\mathrm{Pred}'(x)=\mathrm{Pred}(x)\cup\\{s\\}$$
+
+所以我们只需要更新$e$的父亲为：
+
+<x-formula id="eq:dom-update-spread">$$\begin{align*}\mathrm{Parent}'(x)&=\mathrm{LCA}(\mathrm{Pred}'(x))\\\\&=\mathrm{LCA}(\mathrm{Pred}(x)\cup\\{s\\})\\\\&=\mathrm{LCA}(\mathrm{LCA}(\mathrm{Pred}(x)),s)\\\\&=\mathrm{LCA}(\mathrm{Parent}(x),s)\end{align*}$$</x-formula>
+
+注意：<x-ref-formula ref="eq:dom-update-spread"></x-ref-formula>使用了先前的计算结果，极大地减少了计算量。然而，随着$x$的父亲变更，CFG上所有从$x$出发可达的节点都可能需要更新父亲。
+
+先丢结论：幸运的是，实际需要更新父亲的节点很少，它们是**原CFG上$x$的支配边界闭包**。更幸运的是，这些节点的父亲只需要**更新为$\mathrm{Parent}'(x)$**。这便是增量支配算法能快速计算的最重要的理论依据。
+
+<x-card>
+<x-theorem id="th:dom-frontier-def" label="定义"></x-theorem>
+</x-card>
+
+<!-- 配个图 -->
+
+<!-- 快速判断支配边界 -->
+
+<!-- 检测归约？ -->
+
+##### 快速CFG增量顺序
 
 #### 算法比较
-
-<!--
-
-我们知道：树的支配树就是其本身。因此只考虑树边时，CFG的支配树就是其DFST。这可以作为一个开始，然后逐个考虑其他边，不断调整支配树，最终得到整个CFG的支配树。这个思路也是有价值的：
-
-- 作为增量算法，可以应对不断扩增的CFG
-- 中间步骤得到的支配树都具有意义
-
-接下来，我们来考虑对新增加的边调整支配树的算法。实际上，想<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>的初始
-
-CFG上边$(s,e)$在$DomTree$上有$\mathrm{Parent}(e)\in\mathrm{Ancestors}(s)$。
-
-支配子树在DFST上是连通的。
-
--->
 
 ### 支配边界算法

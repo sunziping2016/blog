@@ -1,9 +1,14 @@
 x-card {
     display: block;
     box-shadow: 0 0.5px 3px rgba(0, 0, 0, 0.3);
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.2rem;
     margin: 1rem 0.5rem;
+}
+
+x-card > *:first-child,
+x-card > * > *:first-child {
+    margin-top: 0;
 }
 
 x-card > *:last-child,
@@ -217,8 +222,39 @@ article {
     font-size: 0.9rem;
 }
 
+#TableOfContents a {
+    border-left: 3px solid transparent;
+}
+
+#TableOfContents a:hover {
+    border-left: 3px solid #2962ff99;
+}
+
+#TableOfContents a.active {
+    border-left: 3px solid #2962ff;
+}
+
 #TableOfContents ul {
     max-width: 100%;
+}
+
+#TableOfContents > ul {
+    padding-left: 0;
+    & > li > a {
+        padding-left: 1.5em;
+    }
+    & > li > ul {
+        padding-left: 0;
+        & > li > a {
+            padding-left: 1.5em + 0.8em;
+        }
+        & > li > ul {
+            padding-left: 0;
+            & > li > a {
+                padding-left: 1.5em + 0.8em * 2;
+            }
+        }
+    }
 }
 
 #TableOfContents a {
