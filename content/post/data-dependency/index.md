@@ -33,6 +33,8 @@ draft: false
 
 本文中的控制流图（CFG）是指**带入口节点$Entry$、可以有重边、可以有自环的有向图**；此外还需要满足**可达性**，即存在从$Entry$到任意节点的路径。<x-comment>（所有算法应当能容忍$Entry$有入边的情况，虽然这是次要的）</x-comment>
 
+我们用$N$表示CFG的节点集合，$E$表示CFG的边集合。
+
 <x-figure src="./example-cfg.svg" id="fig:example-cfg">示例CFG</x-figure>
 
 <x-ref-figure ref="fig:example-cfg"></x-ref-figure>各个合并节点入边的数据依赖见<x-ref-table ref="tab:example-cfg-data-dependency"></x-ref-table>。
@@ -107,9 +109,9 @@ draft: false
 <x-card>
 <x-theorem id="th:dfst-pre-order">令DFST上节点$x$的先序遍历序号为$\mathrm{PreOrder}(x)$，那么原图的边$(u,v)$按照生成树分类，一定满足：
 
-1. 树边：$\mathrm{PreOrder}(u)<\mathrm{PreOrder}(v)$<x-comment>（指向还未搜索过的节点，构成生成树）</x-comment>
+1. 树边：$\mathrm{PreOrder}(u)&lt;\mathrm{PreOrder}(v)$<x-comment>（指向还未搜索过的节点，构成生成树）</x-comment>
 2. 自环：$\mathrm{PreOrder}(u)=\mathrm{PreOrder}(v)$
-3. 其他边：$\mathrm{PreOrder}(u)>\mathrm{PreOrder}(v)$<x-comment>（指向已经搜索过的节点，回溯）</x-comment>
+3. 其他边：$\mathrm{PreOrder}(u)&gt;\mathrm{PreOrder}(v)$<x-comment>（指向已经搜索过的节点，回溯）</x-comment>
 
 逆命题同样成立：任何一棵生成树，如果有$\mathrm{PreOrder}$满足了上面的三个性质，它就可以是以$\mathrm{PreOrder}$为发现顺序的深度优先生成树。
 
@@ -122,7 +124,7 @@ draft: false
 <x-theorem id="th:non-cycle-dag">
 有向的图边按DFST分类后，对任何非循环边$(u,v)$有：
 
-$$\mathrm{RevPostOrder}(u)>\mathrm{RevPostOrder}(v)$$
+$$\mathrm{RevPostOrder}(u)&gt;\mathrm{RevPostOrder}(v)$$
 
 进一步，非循环边组成的子图是一个DAG，其拓扑排序的一种结果是$\mathrm{RevPostOrder}$。
 
@@ -131,7 +133,7 @@ $$\mathrm{RevPostOrder}(u)>\mathrm{RevPostOrder}(v)$$
 
 <x-card>
 <x-theorem id="th:cross-ancestor">
-如果$\mathrm{PreOrder}(u)<\mathrm{PreOrder}(v)$，那么任何路径$u\xrightarrow{*}v$一定包含$u$和$v$的公共祖先。
+如果$\mathrm{PreOrder}(u)&lt;\mathrm{PreOrder}(v)$，那么任何路径$u\xrightarrow{*}v$一定包含$u$和$v$的公共祖先。
 </x-theorem>
 
 <x-proof for="th:cross-ancestor">
@@ -163,8 +165,8 @@ CFG上，节点$x$**支配**节点$y$，是指从$Entry$到$y$的每条路径都
 <x-formula id="eq:dom-rec">$$\begin{cases}\mathrm{StrictDoms}(x)=\varnothing,&\text{if}~x=Entry\\\\\mathrm{StrictDoms}(x)=\bigcap_{y\in\mathrm{Pred}(x)}y\cup\mathrm{StrictDoms}(y),&\text{if}~x\neq Entry\end{cases}$$</x-formula>
 
 <x-comment>（集合交的单位元是全集，因而两个式子不能合并）</x-comment>
-</x-theorem>
 
+</x-theorem>
 </x-card>
 
 <x-ref-theorem ref="th:dom-rec"></x-ref-theorem>说明了严格支配关系的必要条件，但对于一般的CFG，这不是充分条件，详见<x-ref-heading ref="一般cfg的迭代支配算法"></x-ref-heading>。
@@ -201,14 +203,6 @@ $$\mathrm{idom}(x)=\max(\mathrm{StrictDoms}(x))$$
 
 实际实现中，按拓扑序进行插入即可避免<x-ref-algorithm ref="lst:dag-dom-tree"></x-ref-algorithm>中循环的判断。而逆后序遍历恰好是DAG的一种拓扑排序。
 
-<!--
-
-实际实现中，给每个节点一个计数器，初始化为入边的数量。使用一个队列，初始化只包含$Entry$。每次处理一个基本块后，遍历出边，减少终止节点的计数器，减到0了，就加入队列。所以不考虑$\mathrm{LCA}(\mathrm{Pred}(x))$的计算量时，复杂度为$\mathcal{O}(|E|)$（$E$为CFG的边集）。
-
-有趣的是，你会发现这个算法是F. Allen求interval算法的一个进阶版。<x-wip>值得深挖！</x-wip>
-
--->
-
 #### $\mathrm{LCA}$的计算
 
 未加说明的话，以下讨论是对于一般的CFG，不仅限于DAG形式的。
@@ -218,7 +212,7 @@ $$\mathrm{idom}(x)=\max(\mathrm{StrictDoms}(x))$$
 <x-card>
 <x-theorem id="th:dfst-gt-dom">支配树上的祖父子孙关系，在DFST上得到了保留。精确地来说：
 
-$$\begin{cases}\mathrm{Ancestors}\_{DomTree}(x)=\mathrm{Doms}(x)\subseteq\mathrm{Ancestors}\_{DFST}(x)\\\\\mathrm{Descendants}\_{DomTree}(x)=\mathrm{Doms}^{-1}(x)\subseteq\mathrm{Descendants}\_{DFST}(x)\end{cases}$$
+$$\begin{cases}\mathrm{Ancestors}\_{DomTree}(x)\equiv\mathrm{Doms}(x)\subseteq\mathrm{Ancestors}\_{DFST}(x)\\\\\mathrm{Descendants}\_{DomTree}(x)\equiv\mathrm{Doms}^{-1}(x)\subseteq\mathrm{Descendants}\_{DFST}(x)\end{cases}$$
 
 <x-ref-theorem ref="th:dom-order"></x-ref-theorem>是更一般的情况。
 
@@ -228,7 +222,11 @@ $$\begin{cases}\mathrm{Ancestors}\_{DomTree}(x)=\mathrm{Doms}(x)\subseteq\mathrm
 
 类似地，我们也有：
 
-$$\mathrm{StrictAncestors}\_{DomTree}(x)=\mathrm{StrictDoms}(x)\subseteq\mathrm{StrictAncestors}\_{DFST}(x)$$
+$$\mathrm{StrictAncestors}\_{DomTree}(x)\equiv\mathrm{StrictDoms}(x)\subseteq\mathrm{StrictAncestors}\_{DFST}(x)$$
+
+注意：其实许多符号既有图论版本的表述，又有控制流版本的表述，它们是等价的，例如：
+
+$$\begin{matrix}\mathrm{Ancestors}\_{DomTree}\equiv\mathrm{Doms}\\\\\mathrm{StrictAncestors}\_{DomTree}\equiv\mathrm{StrictDoms}\end{matrix}$$
 
 形象地来说，支配者树比DFST更加扁。一个等价的描述是：如果将树的自上而下视作一个偏序关系，那么支配树的偏序关系是DFST偏序关系的子集；另一个更有趣的描述是：支配树的偏序关系是所有DFST偏序关系的交。个人最喜欢的描述是：**支配树是DFST中的某些支干重新接到了祖先上形成的新树**。而这个描述将很好地体现在<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>。<x-ref-figure ref="fig:dom-dfst-relation"></x-ref-figure>是一个例子。
 
@@ -348,7 +346,7 @@ $$\begin{cases}\mathrm{Ancestors}\_{DomTree'}(x)\subseteq\mathrm{Ancestors}\_{Do
 
 $$\mathrm{Pred}'(x)=\mathrm{Pred}(x)\cup\\{s\\}$$
 
-所以我们只需要更新$e$的父亲为：
+所以我们只需要更新$x$的父亲为：
 
 <x-formula id="eq:dom-update-spread">$$\begin{align*}\mathrm{Parent}'(x)&=\mathrm{LCA}(\mathrm{Pred}'(x))\\\\&=\mathrm{LCA}(\mathrm{Pred}(x)\cup\\{s\\})\\\\&=\mathrm{LCA}(\mathrm{LCA}(\mathrm{Pred}(x)),s)\\\\&=\mathrm{LCA}(\mathrm{Parent}(x),s)\end{align*}$$</x-formula>
 
@@ -357,7 +355,22 @@ $$\mathrm{Pred}'(x)=\mathrm{Pred}(x)\cup\\{s\\}$$
 先丢结论：幸运的是，实际需要更新父亲的节点很少，它们是**原CFG上$x$的支配边界闭包**。更幸运的是，这些节点的父亲只需要**更新为$\mathrm{Parent}'(x)$**。这便是增量支配算法能快速计算的最重要的理论依据。
 
 <x-card>
-<x-theorem id="th:dom-frontier-def" label="定义"></x-theorem>
+<x-theorem id="th:dom-frontier-def" label="定义">节点$x$的<b>支配边界</b>是那些有前驱被支配，但本身不被严格支配的节点，记为$\mathrm{DF}(x)$：
+
+$$\mathrm{DF}(x)=\\{y|x\notin\mathrm{StrictDoms}(y)\land\exists p(p\in\mathrm{Pred(y)}\land x\in\mathrm{Doms}(p))\\}$$
+
+按定义，有可能$x\in\mathrm{DF}(x)$。直观理解支配边界就是支配从有到无的界线。接着对于节点$x$，我们引入序列：
+
+$$\begin{cases}\mathrm{DF}^{(i)}(x)\equiv\mathrm{DF}(x),&i=0\\\\\mathrm{DF}^{(i)}(x)=\mathrm{DF}^{(i-1)}(x)\cup\bigcup_{y\in\mathrm{DF}^{(i-1)}(x)}\mathrm{DF}(y),&i=1,2,\dots\end{cases}$$
+
+注意到：
+
+- 序列单调递增：$\mathrm{DF}^{(i)}(x)\subseteq\mathrm{DF}^{(i+1)}(x),i=0,1,\dots$
+- 序列有上界，且上界为有限集：$\mathrm{DF}^{(i)}(x)\subseteq N,i=0,1,\dots$
+
+故存在最小上界，称作$x$的**支配边界闭包**，记作$\mathrm{DF}^+(x)$。
+
+</x-theorem>
 </x-card>
 
 <!-- 配个图 -->
