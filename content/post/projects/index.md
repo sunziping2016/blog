@@ -203,7 +203,7 @@ draft: false
 
 - 依赖：megaparsec
 - 语言：Haskell
-- 代码量：3774
+- 代码量：1839
 - 缘由：《软件理论基础(2):函数式语言程序设计》大作业
 - 源码：[sunziping2016/fpproject](https://github.com/sunziping2016/fpproject)
 
@@ -222,6 +222,7 @@ draft: false
 ![Sound Message UI](./sound-message-ui.jpg)
 
 - 语言：MATLAB（测试），Android Java（最终实现）
+- 代码量：261行（MATLAB），1879行（Java）
 - 缘由：《网络系统2》大作业2
 - 源码：
   - MATLAB：[sunziping2016/matlab-sound-ofdm-qpsk](https://github.com/sunziping2016/matlab-sound-ofdm-qpsk)
@@ -237,6 +238,7 @@ draft: false
 ![Sound Localization UI](./sound-localization-ui.jpg)
 
 - 语言：MATLAB（测试），Android Java（最终实现）
+- 代码量：150行（MATLAB），1420行（Java）
 - 缘由：《网络系统2》大作业3
 - 源码：
   - MATLAB：[sunziping2016/matlab-sound-localization](https://github.com/sunziping2016/matlab-sound-localization)
@@ -252,6 +254,7 @@ draft: false
 ![Graphviz Visualizer UI](./graphviz-visualizer-ui.png)
 
 - 语言：TypeScript
+- 代码量：6682行
 - 缘由：专业课程实践导师布置的任务
 - 源码：暂时闭源
 - 文档：[幻灯片](./graphviz-visualizer-slides.pdf)

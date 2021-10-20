@@ -226,7 +226,7 @@ $$\mathrm{StrictAncestors}\_{DomTree}(x)\equiv\mathrm{StrictDoms}(x)\subseteq\ma
 
 注意：其实许多符号既有图论版本的表述，又有控制流版本的表述，它们是等价的，例如：
 
-$$\begin{matrix}\mathrm{Ancestors}\_{DomTree}\equiv\mathrm{Doms}\\\\\mathrm{StrictAncestors}\_{DomTree}\equiv\mathrm{StrictDoms}\end{matrix}$$
+$$\begin{align*}\mathrm{Ancestors}\_{DomTree}&\equiv\mathrm{Doms}\\\\\mathrm{StrictAncestors}\_{DomTree}&\equiv\mathrm{StrictDoms}\\\\\mathrm{Parent}\_{DomTree}&\equiv\mathrm{idom}\end{align*}$$
 
 形象地来说，支配者树比DFST更加扁。一个等价的描述是：如果将树的自上而下视作一个偏序关系，那么支配树的偏序关系是DFST偏序关系的子集；另一个更有趣的描述是：支配树的偏序关系是所有DFST偏序关系的交。个人最喜欢的描述是：**支配树是DFST中的某些支干重新接到了祖先上形成的新树**。而这个描述将很好地体现在<x-ref-algorithm ref="lst:dom-tree-iter"></x-ref-algorithm>。<x-ref-figure ref="fig:dom-dfst-relation"></x-ref-figure>是一个例子。
 
@@ -309,8 +309,8 @@ $$\mathrm{X}(x)\subseteq\\{w\_i\mid 0\leq i\leq k-1\\}$$
 <x-pseudo-code for="lst:dom-tree-iter">
 
 1. 用某个DFST初始化$DomTree$<x-comment>（初始化）</x-comment>
-2. 循环：如果树上有一个节点$x$，满足$\mathrm{Parent}(x)\neq\mathrm{LCA}(\mathrm{Pred}(x))$：
-   1. 更新$\mathrm{Parent}(x)$为$\mathrm{LCA}(\mathrm{Pred}(x))$<x-comment>（移动了一整棵子树到某个祖先上）</x-comment>
+2. 循环：如果树上有一个节点$x$，满足$\mathrm{Parent}\_{DomTree}(x)\neq\mathrm{LCA}(\mathrm{Pred}(x))$：
+   1. 更新$\mathrm{Parent}\_{DomTree}(x)$为$\mathrm{LCA}(\mathrm{Pred}(x))$<x-comment>（移动了一整棵子树到某个祖先上）</x-comment>
 
 </x-pseudo-code>
 </x-card>
@@ -340,6 +340,8 @@ $$\begin{cases}\mathrm{Ancestors}\_{DomTree'}(x)\subseteq\mathrm{Ancestors}\_{Do
 1. 新增一条边后，如何快速地找出需要更新的节点？见<x-ref-heading ref="支配树上最小范围的更新传播"></x-ref-heading>。
 2. 以什么顺序添加节点和边能较快地增量构造支配树？见<x-ref-heading ref="快速cfg增量顺序"></x-ref-heading>。
 
+为了缩减篇幅，下文的$\mathrm{Ancestors}\_{DomTree}$、$\mathrm{Parent}\_{DomTree}$和$\mathrm{StrictAncestors}\_{DomTree}$不再加下标。
+
 ##### 支配树上最小范围的更新传播
 
 新增一条边后$(s, x)$，只有$x$的前驱集可能发生了变化，即：
@@ -348,11 +350,80 @@ $$\mathrm{Pred}'(x)=\mathrm{Pred}(x)\cup\\{s\\}$$
 
 所以我们只需要更新$x$的父亲为：
 
-<x-formula id="eq:dom-update-spread">$$\begin{align*}\mathrm{Parent}'(x)&=\mathrm{LCA}(\mathrm{Pred}'(x))\\\\&=\mathrm{LCA}(\mathrm{Pred}(x)\cup\\{s\\})\\\\&=\mathrm{LCA}(\mathrm{LCA}(\mathrm{Pred}(x)),s)\\\\&=\mathrm{LCA}(\mathrm{Parent}(x),s)\end{align*}$$</x-formula>
+<x-formula id="eq:dom-update">$$\begin{align*}\mathrm{Parent}'(x)&=\mathrm{LCA}(\mathrm{Pred}'(x))\\\\&=\mathrm{LCA}(\mathrm{Pred}(x)\cup\\{s\\})\\\\&=\mathrm{LCA}(\mathrm{LCA}(\mathrm{Pred}(x)),s)\\\\&=\mathrm{LCA}(\mathrm{Parent}(x),s)\end{align*}$$</x-formula>
 
-注意：<x-ref-formula ref="eq:dom-update-spread"></x-ref-formula>使用了先前的计算结果，极大地减少了计算量。然而，随着$x$的父亲变更，CFG上所有从$x$出发可达的节点都可能需要更新父亲。
+注意：<x-ref-formula ref="eq:dom-update"></x-ref-formula>使用了先前的计算结果，极大地减少了计算量。通过<x-ref-formula ref="eq:dom-update"></x-ref-formula>可以立刻知道什么情况下，不用更新：
 
-先丢结论：幸运的是，实际需要更新父亲的节点很少，它们是**原CFG上$x$的支配边界闭包**。更幸运的是，这些节点的父亲只需要**更新为$\mathrm{Parent}'(x)$**。这便是增量支配算法能快速计算的最重要的理论依据。
+<x-formula id="eq:dom-update-cond">$$\mathrm{Parent}(x)\in\mathrm{Ancestors}(s)\Leftrightarrow\mathrm{Parent}'(x)=\mathrm{Parent}(x)$$</x-formula>
+
+实际实现时，<x-ref-formula ref="eq:dom-update-cond"></x-ref-formula>不是很有用，因为$\mathrm{Ancestors}$也需要沿着支配树上行，与$\mathrm{LCA}$计算量差不多。但<x-ref-formula ref="eq:dom-update-cond"></x-ref-formula>其实揭示了一个很重要的支配树性质，之后会被经常用于加速计算。
+
+<x-card>
+<x-theorem id="th:dom-edge">CFG的所有边$(s,x)$在支配树上有：
+
+$$\mathrm{Parent}(x)\in\mathrm{Ancestors}(s)$$
+
+等价的控制流表述为：
+
+$$\mathrm{idom}(x)\in\mathrm{Doms}(s)$$
+
+</x-theorem>
+<x-proof for="th:dom-edge">这里给出两个证明思路：
+
+- 向CFG添加重边不会使支配树发生变化，由<x-ref-formula ref="eq:dom-update-cond"></x-ref-formula>即证；
+- 反证法：假设$\mathrm{idom}(x)\notin\mathrm{Doms}(s)$，那么存在不经过$\mathrm{\mathrm{idom}(x)}$的路径$Entry\xrightarrow{*}s\rightarrow x$，矛盾。
+
+</x-proof>
+</x-card>
+
+形象地来说，<x-ref-theorem ref="th:dom-edge"></x-ref-theorem>指出，所有CFG上的边在支配树上，会指向起始节点的祖先或起始节点祖先的孩子。
+
+随着$x$的父亲变更，CFG上所有从$x$出发可达的节点都可能需要更新父亲。这部分节点是哪些？它们的父亲又应当更新为哪个节点呢？
+
+<x-card>
+<x-theorem id="th:dom-update-spread">在（不完全的）支配树上，假设除节点$x$外的所有节点$y$都满足$\mathrm{LCA}(\mathrm{Pred}(y))=\mathrm{Parent}(y)$。现在节点$x$的父亲从节点$p$更新为了节点$p'$，且$p'\in\mathrm{StrictAncestors}(p)$。那么满足$\mathrm{LCA}'(\mathrm{Pred}(y))\neq\mathrm{Parent}(y)$<x-comment>（$\mathrm{LCA}$是$x$以$p$为父亲的，而$\mathrm{LCA}'$是$x$以$p'$为父亲的）</x-comment>且不为$x$的节点$y$的集合为：
+
+$$\begin{align*}\mathrm{DomUpdate}(x,p'):=\\{y\mid{}&x\notin\mathrm{Ancestors}(y)\\\\&\land p'\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))\\\\&\land\exists z(z\in\mathrm{Pred}(y)\land x\in\mathrm{Ancestors}(z))\\}\end{align*}$$
+
+且$\mathrm{LCA'}(\mathrm{Pred}(y))=p'$。
+
+</x-theorem>
+<x-proof for="th:dom-update-spread">首先，先证明不在$\mathrm{DomUpdate}(x,p')$中且不为$x$的节点$y$，其$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+
+1. $x\in\mathrm{Ancestors}(y)$：$\mathrm{Pred}(y)$都在$x$的子树上，所以$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+2. $p'\notin\mathrm{StrictAncestors}(\mathrm{Parent}(y))$：$\mathrm{Pred}(y)$不可能都在$x$的子树上，否则$x\in\mathrm{Ancestors}(y)$，进而$p\in\mathrm{StrictAncestors}(y)$，在进而$p'\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))$，矛盾。
+   1. $\mathrm{Pred}(y)$都不在$x$的子树上：$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+   2. $\mathrm{Pred}(y)$有部分在也有部分不在$x$的子树上：$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(p)$，又由于题设$p'\in\mathrm{Ancestors}(p)$和$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{StrictAncestors}(y)$，结合分类讨论假设可得$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(p')$。因此$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+3. $\forall z(z\in\mathrm{Pred}(y)\rightarrow x\notin\mathrm{Ancestors}(z))$：$\mathrm{Pred}(y)$都不在$x$的子树上，$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+
+接着证明，$\mathrm{DomUpdate}(x,p')$中的节点$y$满足$\mathrm{LCA'}(\mathrm{Pred}(y))=p'$。$y$有前导在$x$的子树中，而由$x\notin\mathrm{Ancestors}(y)$可以知道$y$也有前导不在$x$的子树中，这样$\mathrm{LCA}'(\mathrm{Pred}(y))=\mathrm{LCA}(\mathrm{Parent}(y),p')=p'$。
+
+</x-proof>
+</x-card>
+
+<!--
+
+在讨论这两个问题之前，先明确后文用的符号指代的是新对象还是旧对象。在插入边$e$后，我们会更新CFG和$\mathrm{Dst}(e)$在$DomTree$上的父亲。之后的一切符号，无需加单引号，都是指新的CFG和新的$DomTree$。为了避免歧义我们尽量使用图论语言描述支配树。之后算法会有多次迭代，每次迭代都会改变支配树。不加说明时，所有符号都是指最新的CFG和新的$DomTree$，即上次迭代而结果。<x-wip>要更改</x-wip>。
+
+-->
+
+<x-card>
+<x-algorithm id="lst:dom-tree-iter-single-step">在计算完原CFG的支配树$DomTree$后，新增一条边$e$到CFG上，求新CFG的支配树算法。</x-algorithm>
+<x-pseudo-code for="lst:dom-tree-iter-single-step">
+</x-pseudo-code>
+</x-card>
+
+<!-- 操作次序 -->
+
+<!-- 快速判断 -->
+
+<!-- 检测归约？ -->
+
+##### 快速CFG增量顺序
+
+#### 算法比较
+
+### 支配边界算法
 
 <x-card>
 <x-theorem id="th:dom-frontier-def" label="定义">节点$x$的<b>支配边界</b>是那些有前驱被支配，但本身不被严格支配的节点，记为$\mathrm{DF}(x)$：
@@ -372,15 +443,3 @@ $$\begin{cases}\mathrm{DF}^{(i)}(x)\equiv\mathrm{DF}(x),&i=0\\\\\mathrm{DF}^{(i)
 
 </x-theorem>
 </x-card>
-
-<!-- 配个图 -->
-
-<!-- 快速判断支配边界 -->
-
-<!-- 检测归约？ -->
-
-##### 快速CFG增量顺序
-
-#### 算法比较
-
-### 支配边界算法
