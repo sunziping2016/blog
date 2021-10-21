@@ -381,41 +381,63 @@ $$\mathrm{idom}(x)\in\mathrm{Doms}(s)$$
 随着$x$的父亲变更，CFG上所有从$x$出发可达的节点都可能需要更新父亲。这部分节点是哪些？它们的父亲又应当更新为哪个节点呢？
 
 <x-card>
-<x-theorem id="th:dom-update-spread">在（不完全的）支配树上，假设除节点$x$外的所有节点$y$都满足$\mathrm{LCA}(\mathrm{Pred}(y))=\mathrm{Parent}(y)$。现在节点$x$的父亲从节点$p$更新为了节点$p'$，且$p'\in\mathrm{StrictAncestors}(p)$。那么满足$\mathrm{LCA}'(\mathrm{Pred}(y))\neq\mathrm{Parent}(y)$<x-comment>（$\mathrm{LCA}$是$x$以$p$为父亲的，而$\mathrm{LCA}'$是$x$以$p'$为父亲的）</x-comment>且不为$x$的节点$y$的集合为：
+<x-theorem id="th:dom-update-spread"><x-comment>（不完全的）</x-comment>支配树上，若节点集合$\mathcal{X}$外的所有节点$y$都满足$\mathrm{LCA}(\mathrm{Pred}(y))=\mathrm{Parent}(y)$。现将$\mathcal{X}$中所有节点$x$的父亲从节点$p_x$更新为节点$q$，且$q\in\mathrm{StrictAncestors}(p_x)$。那么对于$\mathcal{X}$外的$y$，满足$\mathrm{LCA}'(\mathrm{Pred}(y))\neq\mathrm{Parent}(y)$的集合恰好是<x-comment>（带单引号的符号是更新父亲后的；不带单引号的符号是更新父亲前的）</x-comment>：
 
-$$\begin{align*}\mathrm{DomUpdate}(x,p'):=\\{y\mid{}&x\notin\mathrm{Ancestors}(y)\\\\&\land p'\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))\\\\&\land\exists z(z\in\mathrm{Pred}(y)\land x\in\mathrm{Ancestors}(z))\\}\end{align*}$$
+$$\mathrm{DomUpdate}(\mathcal{X},q):=\\{y\mid{}\begin{aligned}[t]&~q\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))\\\\\land&~\exists x(\begin{aligned}[t]&~x\in\mathcal{X}\\\\\land&~x\notin\mathrm{Ancestors}(y)\\\\\land&~\exists z(z\in\mathrm{Pred}(y)\land x\in\mathrm{Ancestors}(z)))\\}\end{aligned}\end{aligned}$$
 
-且$\mathrm{LCA'}(\mathrm{Pred}(y))=p'$。
+并且对于属于$\mathrm{DomUpdate}(\mathcal{X},q)$且不属于$\mathcal{X}$的$y$有：
+
+$$\mathrm{LCA'}(\mathrm{Pred}(y))=q$$
 
 </x-theorem>
-<x-proof for="th:dom-update-spread">首先，先证明不在$\mathrm{DomUpdate}(x,p')$中且不为$x$的节点$y$，其$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+<x-proof for="th:dom-update-spread">
 
-1. $x\in\mathrm{Ancestors}(y)$：$\mathrm{Pred}(y)$都在$x$的子树上，所以$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
-2. $p'\notin\mathrm{StrictAncestors}(\mathrm{Parent}(y))$：$\mathrm{Pred}(y)$不可能都在$x$的子树上，否则$x\in\mathrm{Ancestors}(y)$，进而$p\in\mathrm{StrictAncestors}(y)$，在进而$p'\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))$，矛盾。
-   1. $\mathrm{Pred}(y)$都不在$x$的子树上：$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
-   2. $\mathrm{Pred}(y)$有部分在也有部分不在$x$的子树上：$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(p)$，又由于题设$p'\in\mathrm{Ancestors}(p)$和$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{StrictAncestors}(y)$，结合分类讨论假设可得$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(p')$。因此$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
-3. $\forall z(z\in\mathrm{Pred}(y)\rightarrow x\notin\mathrm{Ancestors}(z))$：$\mathrm{Pred}(y)$都不在$x$的子树上，$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
+先证明属于$\mathrm{DomUpdate}(\mathcal{X},q)$且不属于$\mathcal{X}$的$y$满足$\mathrm{LCA'}(\mathrm{Pred}(y))=q$。$y$有前导在$\mathcal{X}$的某个元素$x$的子树中，而由$x\notin\mathrm{Ancestors}(y)$可以知道$y$也有前导不在$x$的子树中，这样$\mathrm{LCA}'(\mathrm{Pred}(y))=\mathrm{LCA}(\mathrm{Parent}(y),q)$。又由于$q\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))$，可得$\mathrm{LCA}(\mathrm{Parent}(y),q)=q$。
 
-接着证明，$\mathrm{DomUpdate}(x,p')$中的节点$y$满足$\mathrm{LCA'}(\mathrm{Pred}(y))=p'$。$y$有前导在$x$的子树中，而由$x\notin\mathrm{Ancestors}(y)$可以知道$y$也有前导不在$x$的子树中，这样$\mathrm{LCA}'(\mathrm{Pred}(y))=\mathrm{LCA}(\mathrm{Parent}(y),p')=p'$。
+再证明不在$\mathcal{X}$且不在$\mathrm{DomUpdate}(\mathcal{X},q)$中的$y$满足$\mathrm{LCA}'(\mathrm{Pred}(y))\neq\mathrm{Parent}(y)$：
+
+1. $q\notin\mathrm{StrictAncestors}(\mathrm{Parent}(y))$：对于$\mathcal{X}$中的所有$x$，一定有$\mathrm{Pred}(y)$不全在$x$的子树上<x-comment>（否则$\mathrm{LCA}(\mathrm{Pred}(y))$也在$x$的子树上，则$x$支配$y$，由于更新前$p_x$严格支配$x$且$q$严格支配$p_x$，故$q\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))$，矛盾）</x-comment>。
+   1. 若$\forall x\in\mathcal{X}$，$\mathrm{Pred}(y)$都不在$x$的子树上：$\mathrm{LCA}(\mathrm{Pred})(y)$不变。
+   2. 若$\exists x\in\mathcal{X}$，存在$u\in\mathrm{Pred}(y)$在$x$的子树上：一定有$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(q)$<x-comment>（既有前驱在$x$的子树上，又有前驱不在$x$的子树上，因此$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(p_x)$，由$q\in\mathrm{StrictAncestors}(p_x)$，所以要么$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{Ancestors}(q)$，要么$q\in\mathrm{StrictAncestors}(\mathrm{LCA}(\mathrm{Pred}(y)))$，后者与假设矛盾）</x-comment>，由此更新后，$\mathrm{LCA}(\mathrm{Pred}(y))$是$\mathrm{Pred}(y)$的公共祖先。现要证明更新后，$\mathrm{LCA}(\mathrm{Pred}(y))$的孩子中，有至少两个是$\mathrm{Pred}(y)$某元素的祖先。
+      1. 若$\mathrm{LCA}(\mathrm{Pred}(y))=q$：取$\mathrm{Pred}(y)$中在$x$子树中的元素$u$和不在$x$子树中的元素$v$，更新后$u$到达$q$经过$x$，$v$到达$q$则不经过$x$。
+      2. 若$\mathrm{LCA}(\mathrm{Pred}(y))\in\mathrm{StrictAncestors}(q)$：所有$\mathrm{Pred}(y)$到达$\mathrm{LCA}(\mathrm{Pred}(y))$经过的孩子是不变的<x-comment>（$\mathrm{Pred}(y)$中那些在$\mathcal{X}$某元素子树中的本来就有祖先$q$；不在任何$\mathcal{X}$元素子树中的祖先集合就没变）</x-comment>。
+2. $\forall x(x\in\mathcal{X}\rightarrow x\in\mathrm{Ancestors}(y)\lor\forall z(z\in\mathrm{Pred}(y)\rightarrow x\notin\mathrm{Ancestors}(z)))$：
+   1. 若$\forall x\in\mathcal{X}$，$\mathrm{Pred}(y)$都不在$x$的子树上：$\mathrm{LCA}(\mathrm{Pred})(y)$不变。
+   2. 若有至少一个$\mathcal{X}$的元素是$y$的祖先：令它们的$\max$为$x$，则$\mathrm{Pred}(y)$都在$x$的子树上，子树不变，所以$\mathrm{LCA}(\mathrm{Pred}(y))$不变。
 
 </x-proof>
 </x-card>
 
-<!--
-
-在讨论这两个问题之前，先明确后文用的符号指代的是新对象还是旧对象。在插入边$e$后，我们会更新CFG和$\mathrm{Dst}(e)$在$DomTree$上的父亲。之后的一切符号，无需加单引号，都是指新的CFG和新的$DomTree$。为了避免歧义我们尽量使用图论语言描述支配树。之后算法会有多次迭代，每次迭代都会改变支配树。不加说明时，所有符号都是指最新的CFG和新的$DomTree$，即上次迭代而结果。<x-wip>要更改</x-wip>。
-
--->
+<x-ref-theorem ref="th:dom-update-spread"></x-ref-theorem>如何使用呢？首先，新的边$(s,x)$被添加进了CFG<x-comment>（因而$\mathrm{Pred}$都是考虑了新边）</x-comment>，而后，依据<x-ref-formula ref="eq:dom-update"></x-ref-formula>我们移动$x$的父亲。若移动真的发生，我们依据定理<x-ref-theorem ref="th:dom-update-spread"></x-ref-theorem>计算还要更新的集合<x-comment>（<x-ref-theorem ref="th:dom-update-spread"></x-ref-theorem>的式子其实更新前和更新后计算都是一样的结果）</x-comment>并更新，再计算影响不断迭代。迭代一定终止，因为每次迭代后$\\{y\mid\mathrm{Parent}(y)\neq q\\}$的个数都在减少。一个不带优化的算法就出来了：
 
 <x-card>
-<x-algorithm id="lst:dom-tree-iter-single-step">在计算完原CFG的支配树$DomTree$后，新增一条边$e$到CFG上，求新CFG的支配树算法。</x-algorithm>
-<x-pseudo-code for="lst:dom-tree-iter-single-step">
+<x-algorithm id="lst:dom-tree-iter-single-step-unoptimized">在计算完原CFG的支配树$DomTree$后，新增一条边$(s, x)$到CFG上，未优化的求新CFG的支配树算法。</x-algorithm>
+<x-pseudo-code for="lst:dom-tree-iter-single-step-unoptimized">
+
+1. 将$(s, x)$添加到CFG上
+2. $q\leftarrow\mathrm{LCA}(\mathrm{Parent}(x),s)$
+3. 如果$\mathrm{Parent}(x)\neq q$
+   1. $\mathrm{Parent}(x)\leftarrow q$
+   2. $\mathcal{X}\leftarrow\\{x\\}$
+   3. 循环：$\mathcal{X}\leftarrow\mathrm{DomUpdate}(\mathcal{X}, q)$，如果$\mathcal{X}\neq\varnothing$：
+      1. 循环：对于$y\in\mathcal{X}$：
+         1. $\mathrm{Parent}(y)\leftarrow q$
+
 </x-pseudo-code>
 </x-card>
 
-<!-- 操作次序 -->
+首先，我们会发现：
 
-<!-- 快速判断 -->
+<x-formula ref="eq:dom-update-spread">$$\mathrm{DomUpdate}(\mathcal{X}, q)=\bigcup_{x\in\mathcal{X}}\mathrm{DomUpdate}(\\{x\\}, q)$$</x-formula>
+
+这告诉我们，挨个算的结果也一样。进一步，由于并的结合律和交换率，只要避免$\mathrm{DomUpdate}$重复计算，可以FIFO，可以LIFO，都能有一样的结果。那么如何避免重复计算？先应用更改即$\mathrm{Parent}(y)\leftarrow q$，再enqueue即可。这样就无需任何散列表之类的数据结构。
+
+接着，我们来考虑优化$\mathrm{DomUpdate}(\\{x\\})$的计算。
+
+1. 判断$x\notin\mathrm{Ancestors}(y)\land\exists z(z\in\mathrm{Pred}(y)\land x\in\mathrm{Ancestors}(z)))$：可以搜索$x$的子孙，找到流出其控制区域的出边<x-comment>（这个概念几乎就是支配边界）</x-comment>。这就有两个问题：如何搜索子孙？如何判断边$(w,y)$流出控制区域？前者稍后说，先考虑后者。借助<x-ref-theorem ref="th:dom-edge"></x-ref-theorem>，知$\mathrm{Parent}(y)$支配$w$。由于$x$也支配$w$，故而要么$\mathrm{Parent}(y)$严格支配$x$，要么$x$支配$\mathrm{Parent}(y)$。前者说明是流出控制区域，只需要用<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>即可快速分辨。
+2. 判断$q\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))$：先前的检测确保了$\mathrm{Parent}(y)$严格支配$x$，由于$q$也严格支配$x$，故而要么$q$严格支配$\mathrm{Parent}(y)$，要么$\mathrm{Parent}(y)$支配$q$，前者就是我们想要的，同样只需要用<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>即可快速分辨。
+
+如何所搜$x$的子孙？构建支配树时我们会维护一个动态的$\mathrm{Parent}$数组，如果还要维护动态的$\mathrm{Children}$数组太慢了。可否顺着CFG遍历？答案是可行的，因为支配子树的节点可以从子树的根出发，不经过子树外的节点遍历完。然而这需要散列表之类的数据结构标记是否遍历过。有没有更好的？答案就是顺着DFST遍历。
 
 <!-- 检测归约？ -->
 
