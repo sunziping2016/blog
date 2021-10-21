@@ -437,11 +437,42 @@ $$\mathrm{LCA'}(\mathrm{Pred}(y))=q$$
 1. 判断$x\notin\mathrm{Ancestors}(y)\land\exists z(z\in\mathrm{Pred}(y)\land x\in\mathrm{Ancestors}(z)))$：可以搜索$x$的子孙，找到流出其控制区域的出边<x-comment>（这个概念几乎就是支配边界）</x-comment>。这就有两个问题：如何搜索子孙？如何判断边$(w,y)$流出控制区域？前者稍后说，先考虑后者。借助<x-ref-theorem ref="th:dom-edge"></x-ref-theorem>，知$\mathrm{Parent}(y)$支配$w$。由于$x$也支配$w$，故而要么$\mathrm{Parent}(y)$严格支配$x$，要么$x$支配$\mathrm{Parent}(y)$。前者说明是流出控制区域，只需要用<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>即可快速分辨。
 2. 判断$q\in\mathrm{StrictAncestors}(\mathrm{Parent}(y))$：先前的检测确保了$\mathrm{Parent}(y)$严格支配$x$，由于$q$也严格支配$x$，故而要么$q$严格支配$\mathrm{Parent}(y)$，要么$\mathrm{Parent}(y)$支配$q$，前者就是我们想要的，同样只需要用<x-ref-theorem ref="th:dom-post-order"></x-ref-theorem>即可快速分辨。
 
-如何所搜$x$的子孙？构建支配树时我们会维护一个动态的$\mathrm{Parent}$数组，如果还要维护动态的$\mathrm{Children}$数组太慢了。可否顺着CFG遍历？答案是可行的，因为支配子树的节点可以从子树的根出发，不经过子树外的节点遍历完。然而这需要散列表之类的数据结构标记是否遍历过。有没有更好的？答案就是顺着DFST遍历。
+如何所搜$x$的子孙？构建支配树时我们会维护一个动态的$\mathrm{Parent}$数组，如果还要维护动态的$\mathrm{Children}$数组太慢了。可否顺着CFG遍历？答案是可行的，因为支配子树的节点可以从子树的根出发，不经过子树外的节点遍历完。然而这需要散列表之类的数据结构标记是否遍历过。有没有更好的？答案就是顺着DFST遍历。<x-comment>（这是支配树和DFST关系的第二个独立性质，第一个是<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>）</x-comment>
 
-<!-- 检测归约？ -->
+<x-card>
+<x-theorem id="th:dfst-connected-on-dom">支配树上，以$s$为根的子树节点集合为$\mathcal{S}$，则在DFST（有向图）上，从$s$出发，只经过$\mathcal{S}$中的节点，可以到达$\mathcal{S}$中的每个节点。
+</x-theorem>
+<x-proof for="th:dfst-connected-on-dom">由<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>可知从$s$出发可以到达$\mathcal{S}$中的每个节点。反证法，如果存在$s$到某个节点$x\in\mathcal{S}$，经过了不被$s$支配的节点$y$，就可以构造绕过$s$的路径$Entry\xrightarrow{*}y\xrightarrow{+}x$，矛盾。</x-proof>
+</x-card>
+
+进一步，遍历子树可以和$\mathrm{DomUpdate}$的迭代共享一个工作队列，最后优化的算法如下：
+
+<x-card>
+<x-algorithm id="lst:dom-tree-iter-single-step">在计算完原CFG的支配树$DomTree$后，新增一条边$(s, x)$到CFG上，优化后的求新CFG的支配树算法。</x-algorithm>
+<x-pseudo-code for="lst:dom-tree-iter-single-step">
+
+1. 将$(s, x)$添加到CFG上，并初始化$S$为工作队列
+2. $q\leftarrow\mathrm{LCA}(\mathrm{Parent}(x),s)$
+3. 如果：$\mathrm{Parent}(x)\neq q$
+   1. $S.\mathrm{push}((x, \mathrm{Parent}(x)))$
+   2. $\mathrm{Parent}(x)\leftarrow q$
+4. 循环：如果$S$非空：
+   1. $(t, p)\leftarrow S.\mathrm{pop}()$
+   2. 循环：对于$t$的每个出边$e=(t, y)$：
+      1. $p_y\leftarrow\mathrm{Parent}(y)$
+      2. 如果：$\mathrm{RevPostOrder}(p_y)\leq\mathrm{RevPostOrder}(p)$
+         1. 如果：$\mathrm{RevPostOrder}(p_y)>\mathrm{RevPostOrder}(q)$：
+            1. $S.\mathrm{push}((y, p_y))$
+            2. $\mathrm{Parent}(y)\leftarrow q$
+      3. 否则如果：$e$是DFST的树边：
+         1. $S.\mathrm{push}((y, p))$
+
+</x-pseudo-code>
+</x-card>
 
 ##### 快速CFG增量顺序
+
+<!-- 检测归约？ -->
 
 #### 算法比较
 
