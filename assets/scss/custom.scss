@@ -263,8 +263,12 @@ article {
     white-space: nowrap;
 }
 
-.article-container, .container {
+article, .container {
     max-width: 840px;
+}
+
+article {
+    flex-grow: 1;
 }
 
 .card-simple .article-title,
@@ -280,6 +284,7 @@ article {
 
 .docs-toc {
     max-width: 240px;
+    flex-grow: 1;
 }
 
 .post-nav {

@@ -440,7 +440,7 @@ $$\mathrm{LCA'}(\mathrm{Pred}(y))=q$$
 如何所搜$x$的子孙？构建支配树时我们会维护一个动态的$\mathrm{Parent}$数组，如果还要维护动态的$\mathrm{Children}$数组太慢了。可否顺着CFG遍历？答案是可行的，因为支配子树的节点可以从子树的根出发，不经过子树外的节点遍历完。然而这需要散列表之类的数据结构标记是否遍历过。有没有更好的？答案就是顺着DFST遍历。<x-comment>（这是支配树和DFST关系的第二个独立性质，第一个是<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>）</x-comment>
 
 <x-card>
-<x-theorem id="th:dfst-connected-on-dom">支配树上，以$s$为根的子树节点集合为$\mathcal{S}$，则在DFST（有向图）上，从$s$出发，只经过$\mathcal{S}$中的节点，可以到达$\mathcal{S}$中的每个节点。
+<x-theorem id="th:dfst-connected-on-dom">支配树上，以$s$为根的子树节点集合为$\mathcal{S}$，则在DFST（有向图）上，从$s$出发，只经过$\mathcal{S}$中的节点，可以到达$\mathcal{S}$中的每个节点。<x-wip> 这个性质是否是Tarjan Lemma 5的等价表述？</x-wip>
 </x-theorem>
 <x-proof for="th:dfst-connected-on-dom">由<x-ref-theorem ref="th:dfst-gt-dom"></x-ref-theorem>可知从$s$出发可以到达$\mathcal{S}$中的每个节点。反证法，如果存在$s$到某个节点$x\in\mathcal{S}$，经过了不被$s$支配的节点$y$，就可以构造绕过$s$的路径$Entry\xrightarrow{*}y\xrightarrow{+}x$，矛盾。</x-proof>
 </x-card>

@@ -1,6 +1,4 @@
 ---
-# Documentation: https://wowchemy.com/docs/managing-content/
-
 title: "我的项目"
 authors: [szp]
 tags: [大作业]
