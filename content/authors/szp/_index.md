@@ -18,7 +18,7 @@ social:
   link: https://github.com/sunziping2016
 - icon: cv
   icon_pack: ai
-  link: files/resume.zh.pdf
+  link: files/resume.pdf
 ---
 
 ## 个人简介
