@@ -92,3 +92,5 @@ Random check is a silly way to find the 'bottom of valley', In practice, always 
 Full sum expensive when N is large.
 
 Approximate sum using a minibatch of examples 32/64/128 common
+
+## Backpropagation and Neural Networks

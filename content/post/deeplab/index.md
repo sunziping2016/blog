@@ -1,5 +1,5 @@
 ---
-title: "DeepLab"
+title: "DeepLab (WIP)"
 authors: [wt]
 tags: [机器学习]
 categories: [机器学习]
@@ -61,4 +61,4 @@ draft: false
 
 ### 主要贡献
 
-## v4
+## v3+
