@@ -72,7 +72,7 @@ draft: false
 
 ## Qt植物大战僵尸
 
-{{<bilibili aid="84668687" bvid="BV1Z7411e7vM" cid="144806754" aspect-ratio="0.75" width="0.5">}}
+{{<bilibili aid="634965599" bvid="BV1ub4y1v7MF" cid="462505538" aspect-ratio="0.75" width="0.5">}}
 
 - 依赖：Qt
 - 语言：C++
