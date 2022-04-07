@@ -6,96 +6,106 @@
 # Appearance
 
 i_am_a_sponsor: true
-theme: starter-blog
-day_night: true
-font: ''
-font_size: L
+appearance:
+  theme_day: custom
+  theme_night: custom
+  font: minimal
+  font_size: L
 
 # SEO
 
-site_type: Person
-local_business_type: ''
-org_name: ''
-description: 'A highly-customizable Hugo blog theme powered by Wowchemy website builder.'
-twitter: 'wowchemy'
+marketing:
+  seo:
+    site_type: Person
+    local_business_type: ''
+    org_name: ''
+    description: 'A highly-customizable Hugo blog theme powered by Wowchemy website builder.'
+    twitter: 'wowchemy'
+  analytics:
+    google_analytics: ''
+    baidu_tongji: ''
+  verification:
+    google: ''
+    baidu: ''
 
 # Site header
 
-main_menu:
-  enable: true
-  align: r
-  show_logo: true
-  show_language: false
-  show_day_night: true
-  show_search: true
-  highlight_active_link: true
+header:
+  navbar:
+    enable: true
+    align: r
+    show_logo: true
+    show_language: false
+    show_day_night: true
+    show_search: true
+    highlight_active_link: true
+
+footer:
+  copyright:
+    notice: '<i class="far fa-copyright"></i> 2016-{year} 孙子平&韦婷 [京ICP备 17062397号-2](https://beian.miit.gov.cn)'
+    license:
+      enable: true
+      allow_derivatives: false
+      share_alike: true
+      allow_commercial: false
 
 # Localization
 
-date_format: 'Jan 2, 2006'
-time_format: '3:04 PM'
+locale:
+  date_format: 'Jan 2, 2006'
+  time_format: '3:04 PM'
+
+plugins_js: ['cross-reference']
 
 # Site features
 
-highlight: true
-highlight_languages:
-  - r
-  - haskell
-  - coq
-math: true
-diagram: true
-privacy_pack: false
-edit_page:
-  repo_url: ''
-  content_dir: ''
-  repo_branch: main
-  editable:
-    post: false
-show_related:
-  post: true
-email: test@example.org
-sharing_image: ''
-reading_time: true
-section_pager: true
-sharing: true
-copyright_license:
-  enable: false
-  allow_derivatives: false
-  share_alike: true
-  allow_commercial: false
-  notice: 'This work is licensed under {license}'
-plugins_js: ['cross-reference']
-avatar:
-  gravatar: false
-  shape: circle
-comments:
-  provider: ''
-  commentable:
-    post: true
-  disqus:
-    shortname: ''
-    show_count: true
-  commento:
-    url: ''
-search:
-  provider: wowchemy
-  algolia:
-    app_id: ''
+features:
+  syntax_highlighter:
+    enable: true
+    extra_languages:
+      - r
+      - haskell
+      - coq
+  math:
+    enable: true
+  diagram:
+    enable: true
+  privacy_pack:
+    enable: false
+  repository:
+    url: 'https://github.com/sunziping2016/blog'
+    content_dir: content
+    branch: master
+  avatar:
+    gravatar: false
+    shape: circle
+  comment:
+    provider: ''
+    disqus:
+      shortname: ''
+      show_count: true
+    commento:
+      url: ''
+  search:
+    provider: wowchemy
+    algolia:
+      app_id: ''
+      api_key: ''
+      index_name: ''
+      show_logo: false
+  map:
+    provider: ''
     api_key: ''
-    index_name: ''
-    show_logo: false
-map:
-  provider: ''
-  api_key: ''
-  zoom: 15
+    zoom: 15
+
 marketing:
-  google_analytics: 'UA-88008647-1'
-  google_tag_manager: ''
-  google_site_verification: ''
-  microsoft_clarity: '8rvhp8928v'
-cms:
-  branch: main
-  local_backend: false
-icon:
-  pack:
-    ai: true
+  analytics:
+    google_analytics: 'UA-88008647-1'
+    microsoft_clarity: '8rvhp8928v'
+
+extensions:
+  cms:
+    branch: main
+    local_backend: false
+  academicons:
+    enable: false

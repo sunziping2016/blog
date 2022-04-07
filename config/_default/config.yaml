@@ -5,7 +5,21 @@
 
 title: 山楂片的博客 # Website name
 baseurl: 'https://szp15.com' # Website URL
-copyright: '<i class="far fa-copyright"></i> 2016-{year} 孙子平&韦婷 [京ICP备 17062397号-2](https://beian.miit.gov.cn)' # Footer text, e.g. '© {year} Me'
+
+############################
+## PAGE OPTIONS
+############################
+
+cascade:
+  # Blog post options
+  - _target:
+      path: /post/**
+    editable: true
+    reading_time: true
+    commentable: true
+    show_related: true
+    show_breadcrumb: true
+    share: true
 
 ############################
 ## LANGUAGE
@@ -67,3 +81,7 @@ related:
       weight: 100
     - name: categories
       weight: 70
+security:
+  _merge: deep
+sitemap:
+  _merge: deep

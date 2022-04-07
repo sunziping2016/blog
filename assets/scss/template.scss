@@ -1,15 +1,47 @@
 // Starter Blog Template
 // https://wowchemy.com/hugo-themes/
 
+body {
+  background-color: rgb(247, 250, 252);
+}
+
+.article-container {
+  background-color: #fff;
+  border-radius: 15px;
+}
+.dark .article-container {
+  background-color: rgb(31, 39, 51);
+}
+
+// custom footer color
+.page-footer {
+  background-color: rgb(247, 250, 252);
+}
+.dark .page-footer {
+  background-color: rgb(26, 32, 44);
+}
+
+// more rounded cards and larger gap between cards
+.card-simple {
+  margin-top: 1.8rem;
+  border-radius: 15px;
+}
+.dark .card-simple {
+  background: rgb(31, 39, 51);
+}
+
+// no navbar shadow
+.navbar {
+  box-shadow: none !important; // 'important' to override dark mode box-shadow too.
+}
+
+// custom section padding
 .home-section {
-  padding: 3em 0 3em 0;
+  padding: 1rem 0 1rem 0;
 }
 
 .home-section.wg-about-avatar {
-  padding: 0.2rem 0 0.2rem 0;
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
+  padding: 0 0 0 0;
 }
 
 #profile .network-icon {
@@ -23,15 +55,11 @@ ul.network-icon .big-icon {
 .dark .portrait-title h3 {
   color: rgba(255, 255, 255, 0.9);
   font-weight: bold;
-  -webkit-text-fill-color: white;
-  -webkit-text-stroke: 0.5px black;
 }
 
 .dark .portrait-title h2 {
   color: #fff;
   font-weight: bold;
-  -webkit-text-fill-color: white;
-  -webkit-text-stroke: 1px black;
 }
 
 .home-section > .content {
@@ -54,7 +82,7 @@ ul.network-icon .big-icon {
     max-width: 880px;
   }
 }
-@media (min-width: 992px){
+@media (min-width: 992px) {
   .home-section .container {
     max-width: 880px;
   }
@@ -85,14 +113,14 @@ pre, code {
 }
 
 .article-container {
-  max-width: 960px;
+  max-width: 1100px;
 }
 
 // Smaller Name and Role text on About page than in homepage `about.avatar` widget
 .wg-about .portrait-title h2 {
-  font-size: 1rem
+  font-size: 1rem;
 }
 
 .wg-about .portrait-title h3 {
-  font-size: .8rem
+  font-size: 0.8rem;
 }
