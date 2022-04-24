@@ -216,6 +216,10 @@ article {
     min-width: 0;
 }
 
+#TableOfContents {
+    border-left: none;
+}
+
 .docs-toc,
 .toc-top li a,
 #TableOfContents li a {
@@ -271,6 +275,17 @@ article {
     flex-grow: 1;
 }
 
+article {
+    .article-container {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.09);
+
+    }
+    .article-container + .article-container {
+        margin-top: .6em;
+    }
+}
+
 .card-simple .article-title,
 .media.stream-item .article-title {
     font-size: 1.4rem;
@@ -315,4 +330,9 @@ h6 {
 
 table {
     font-size: 1rem;
+}
+
+
+a code {
+    color: #2962ff !important;
 }

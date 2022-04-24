@@ -1,0 +1,12 @@
+{{- define "main" -}}
+<div class="d-flex justify-content-center">
+    <article class="article">
+        {{ partial "page_header" . }}
+        <div class="article-container">
+            <div class="article-style">
+                {{ .Content }}
+            </div>
+        </div>
+    </article>
+</div>
+{{- end -}}

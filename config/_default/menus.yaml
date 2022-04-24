@@ -7,9 +7,9 @@ main:
   - name: 标签
     url: tags/
     weight: 20
-  - name: 分类
-    url: categories/
-    weight: 30
   - name: 作者
     url: authors/
+    weight: 30
+  - name: 链接
+    url: links/
     weight: 40
