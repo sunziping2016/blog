@@ -15,7 +15,9 @@ jobs:
 
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
@@ -26,7 +28,7 @@ jobs:
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
-        hugo-version: '0.96.0'
+        hugo-version: '0.97.3'
         extended: true
 
     - name: Set up Node.js ${{ matrix.node }}
