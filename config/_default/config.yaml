@@ -53,6 +53,7 @@ disableAliases: true
 permalinks:
   authors: '/author/:slug/'
   tags: '/tag/:slug/'
+  categories: '/category/:slug/'
 disableAliases: true
 outputs:
   home: [HTML, RSS, JSON, WebAppManifest, headers, redirects]
@@ -64,6 +65,7 @@ imaging:
 timeout: 600000
 taxonomies:
   tag: tags
+  category: categories
   author: authors
 markup:
   _merge: deep
