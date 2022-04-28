@@ -1,5 +1,5 @@
 ---
-title: "PFENet源码阅读"
+title: "PFENet源码阅读（未完待续）"
 authors: [szp]
 tags: [深度学习]
 categories: [深度学习]
@@ -73,5 +73,15 @@ Dataset加载的代码主要是在[`dataset.py`](https://github.com/dvlab-resear
 6. 返回：原样本图片、原样本标签、支撑集图片（stack）、支撑剂标签（stack）、`[class_chosen] * shot`和，如果`mode`不是train的话，未过`transform`的标签
 
 ## 模型
+
+### Backbone
+
+PFENet提供了VGG16和ResNet50、101、152这4个模型作为Backbone模型。可以通过模型构造函数参数中的`vgg`和`layers`选择Backbone模型。PFENet的作者从torchvision的代码里复制了VGG和ResNet的代码到他们的代码库里，然后做了修改。
+
+#### VGG
+
+作者虽然复制了份VGG的代码，但几乎没做更改。作者选用的VGG16是带BatchNorm的版本，VGG本身是由一系列不改变尺寸的Conv2d和5次核大小为2的MaxPool2d组成的特征提取层，之后连接了全连层为主的分类器。PFENet以5个MaxPool2d为层结尾，将特征提取层细分为5个层，用以提取不同级别的特征。
+
+#### ResNet
 
 [^tian2020prior]: Tian, Zhuotao, et al. "Prior guided feature enrichment network for few-shot segmentation." *IEEE transactions on pattern analysis and machine intelligence* (2020).

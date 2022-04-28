@@ -80,12 +80,12 @@ features:
     gravatar: false
     shape: circle
   comment:
-    provider: ''
+    provider: 'commento'
     disqus:
       shortname: ''
       show_count: true
     commento:
-      url: ''
+      url: 'https://commento.szp15.com'
   search:
     provider: wowchemy
     algolia:
