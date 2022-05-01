@@ -142,6 +142,7 @@ table {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
+    margin-bottom: 1rem;
 }
 
 table thead {
@@ -154,6 +155,10 @@ table > thead > tr > th {
 
 table tbody {
     border-bottom: 2px solid black;
+}
+
+table th, table td {
+    padding: 0 6px;
 }
 
 mjx-container[jax="CHTML"][display="true"] {
@@ -336,4 +341,8 @@ table {
 
 a code {
     color: #2962ff !important;
+}
+
+pre {
+    font-size: unset;
 }
