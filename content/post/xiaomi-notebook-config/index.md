@@ -5,7 +5,7 @@ tags: [配置, ArchLinux]
 categories: [配置]
 date: 2020-02-18T14:30:13Z
 featured: false
-draft: false
+draft: true
 ---
 
 这篇文章关于我的小米笔记本的配置。

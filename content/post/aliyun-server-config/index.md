@@ -5,7 +5,7 @@ tags: [配置, Ubuntu]
 categories: [配置]
 date: 2020-01-23T07:56:24Z
 featured: false
-draft: false
+draft: true
 ---
 
 这篇文章是关于如何配置我的阿里云服务器。阿里云服务器上有Web服务、Seafile和Minecraft（spigot），计划还会配有MongoDB、Redis、ElasticSearch等服务。

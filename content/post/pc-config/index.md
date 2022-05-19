@@ -5,7 +5,7 @@ tags: [PC, 配置, ArchLinux]
 categories: [配置]
 date: 2017-08-16T04:00:00+08:00
 featured: false
-draft: false
+draft: true
 ---
 
 这篇文章主要是关于自己ArchLinux系统的配置的。

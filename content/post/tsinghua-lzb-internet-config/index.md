@@ -5,7 +5,7 @@ tags: [配置]
 categories: [配置]
 date: 2021-01-17T15:49:14Z
 featured: false
-draft: false
+draft: true
 ---
 
 这篇文章是关于清华软院零字班学生上网所需要的配置方案的。
