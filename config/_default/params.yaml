@@ -10,7 +10,7 @@ appearance:
   theme_day: custom
   theme_night: custom
   font: minimal
-  font_size: L
+  font_size: M
 
 # SEO
 
@@ -52,20 +52,19 @@ footer:
 # Localization
 
 locale:
-  date_format: 'Jan 2, 2006'
-  time_format: '3:04 PM'
+  date_format: '2006年1月2日'
+  time_format: '15:04'
+  address_format: zh
 
-plugins_js: ['cross-reference']
+plugins_js: ['cross-reference', 'fix-search-common']
 
 # Site features
 
 features:
   syntax_highlighter:
     enable: true
-    extra_languages:
-      - r
-      - haskell
-      - coq
+    theme_light: xcode-light
+    theme_dark: xcode-dark
   math:
     enable: true
   diagram:
@@ -87,12 +86,12 @@ features:
     commento:
       url: 'https://commento.szp15.com'
   search:
-    provider: wowchemy
+    provider: algolia
     algolia:
-      app_id: ''
-      api_key: ''
-      index_name: ''
-      show_logo: false
+      app_id: '6ATAB1HBV6'
+      api_key: 'd18c880fa171aef8cb0844ddf1e269cd'
+      index_name: 'szp15.com'
+      show_logo: true
   map:
     provider: ''
     api_key: ''

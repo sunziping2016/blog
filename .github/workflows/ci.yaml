@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         node-version: [16.x]
 
     steps:
@@ -28,7 +28,7 @@ jobs:
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
-        hugo-version: '0.97.3'
+        hugo-version: '0.101.0'
         extended: true
 
     - name: Set up Node.js ${{ matrix.node }}
@@ -40,9 +40,23 @@ jobs:
     - name: Check for linting errors
       run: npm test
 
+    - name: Generate Hugo Chroma Style
+      run: |
+        hugo gen chromastyles --style=xcode > assets/css/libs/chroma/xcode-light.css
+        hugo gen chromastyles --style=xcode-dark > assets/css/libs/chroma/xcode-dark.css
+
     - name: Build production website
       run: hugo
 
     - name: Deploy to szp15.com
       if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x' }}
       run: rsync -avz --delete public/ sun@szp15.com:/srv/http/blog/
+
+    - name: Upload index.json to algolia
+      uses: wangchucheng/algolia-uploader@master
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x' }}
+      with:
+        app_id: 6ATAB1HBV6
+        admin_key: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+        index_name: szp15.com
+        index_file_path: public/index.json

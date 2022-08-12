@@ -286,4 +286,3 @@ $X,Y$是CFG节点，那么$Y$控制依赖于$X$，当且仅当在RCFG中$X\in DF
 <!-- TODO: 死代码消除、支配者树算法 -->
 
 [^cytron1991efficiently]: Cytron, R., Ferrante, J., Rosen, B. K., Wegman, M. N., & Zadeck, F. K. (1991). Efficiently computing static single assignment form and the control dependence graph. *ACM Transactions on Programming Languages and Systems (TOPLAS)*, 13(4), 451-490.
-[^lengauer1979fast]: Lengauer, T., & Tarjan, R. E. (1979). A fast algorithm for finding dominators in a flowgraph. *ACM Transactions on Programming Languages and Systems (TOPLAS)*, 1(1), 121-141.

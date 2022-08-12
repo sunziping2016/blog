@@ -4,8 +4,8 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "husky": "^7.0.4",
-    "markdownlint": "^0.25.1",
-    "markdownlint-cli2": "^0.4.0"
+    "husky": "^8.0.1",
+    "markdownlint": "^0.26.2",
+    "markdownlint-cli2": "^0.5.0"
   }
 }

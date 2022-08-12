@@ -8,7 +8,6 @@ featured: false
 draft: false
 slides:
   theme: "white"
-  highlight_style: "github"
 ---
 
 {{< slide background-image="./background.svg">}}

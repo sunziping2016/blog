@@ -346,3 +346,15 @@ a code {
 pre {
     font-size: unset;
 }
+
+.ais-InfiniteHits-item {
+    font-size: 1.1rem
+}
+
+.search-hit-description {
+    font-size: 0.825rem;
+}
+
+.ais-InfiniteHits-item + .ais-InfiniteHits-item {
+    margin-top: 0.8rem;
+}
