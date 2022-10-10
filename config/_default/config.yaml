@@ -75,6 +75,8 @@ markup:
   tableOfContents:
     startLevel: 2
     endLevel: 4
+  highlight:
+    lineNos: false
 related:
   threshold: 80
   includeNewer: true
@@ -87,4 +89,6 @@ related:
 security:
   _merge: deep
 sitemap:
+  _merge: deep
+minify:
   _merge: deep
